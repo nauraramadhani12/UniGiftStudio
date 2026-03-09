@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Products</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="bg-amber-50">
+
+<div class="max-w-7xl mx-auto py-10">
+
+<h1 class="text-3xl font-bold mb-6">
+Product Marketplace
+</h1>
+
+<!-- SEARCH -->
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search souvenir..."
+class="border p-2 w-full mb-6"
+onkeyup="searchProduct()">
+
+<!-- FILTER -->
+
+<select id="categoryFilter"
+class="border p-2 mb-6"
+onchange="filterCategory()">
+
+<option value="all">All</option>
+<option value="keychain">Keychain</option>
+<option value="statue">Statue</option>
+
+</select>
+
+<!-- PRODUCT GRID -->
+
+<div id="productGrid"
+class="grid grid-cols-4 gap-6">
+
+<div class="product statue bg-white p-4 rounded shadow">
+
+<img src="https://via.placeholder.com/200">
+
+<h3 class="font-semibold mt-2">
+Mini Statue
+</h3>
+
+<p class="text-orange-500">
+Rp150.000
+</p>
+
+</div>
+
+<div class="product keychain bg-white p-4 rounded shadow">
+
+<img src="https://via.placeholder.com/200">
+
+<h3 class="font-semibold mt-2">
+Custom Keychain
+</h3>
+
+<p class="text-orange-500">
+Rp30.000
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function searchProduct(){
+
+let input=document.getElementById("searchInput").value.toLowerCase()
+
+let products=document.querySelectorAll(".product")
+
+products.forEach(p=>{
+
+let text=p.innerText.toLowerCase()
+
+p.style.display=text.includes(input)?"block":"none"
+
+})
+
+}
+
+function filterCategory(){
+
+let category=document.getElementById("categoryFilter").value
+
+let products=document.querySelectorAll(".product")
+
+products.forEach(p=>{
+
+if(category=="all" || p.classList.contains(category))
+
+p.style.display="block"
+
+else
+
+p.style.display="none"
+
+})
+
+}
+
+</script>
+
+</body>
+</html>
