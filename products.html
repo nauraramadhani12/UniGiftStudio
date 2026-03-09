@@ -1,118 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
+
 <head>
-
-<title>Products</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace | Uni Gift Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
 </head>
 
-<body class="bg-amber-50">
+<body class="bg-slate-50 text-slate-900">
+    <div class="max-w-7xl mx-auto px-6 py-16">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+            <div>
+                <h1 class="text-4xl font-extrabold mb-2 text-slate-800">Marketplace Souvenir</h1>
+                <p class="text-slate-500 text-lg">Temukan desain unik dari kreator terbaik.</p>
+            </div>
 
-<div class="max-w-7xl mx-auto py-10">
+            <div class="flex gap-3 w-full md:w-auto">
+                <input type="text" id="searchInput" onkeyup="searchProduct()" placeholder="Cari souvenir..." class="bg-white border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-orange-500 p-4 rounded-2xl w-full md:w-80 shadow-sm transition">
 
-<h1 class="text-3xl font-bold mb-6">
-Product Marketplace
-</h1>
+                <select id="categoryFilter" onchange="filterCategory()" class="bg-white border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-orange-500 p-4 rounded-2xl shadow-sm font-semibold text-slate-600">
+                    <option value="all">Semua Kategori</option>
+                    <option value="statue">Patung (3D Statue)</option>
+                    <option value="keychain">Gantungan Kunci</option>
+                </select>
+            </div>
+        </div>
 
-<!-- SEARCH -->
-
-<input
-type="text"
-id="searchInput"
-placeholder="Search souvenir..."
-class="border p-2 w-full mb-6"
-onkeyup="searchProduct()">
-
-<!-- FILTER -->
-
-<select id="categoryFilter"
-class="border p-2 mb-6"
-onchange="filterCategory()">
-
-<option value="all">All</option>
-<option value="keychain">Keychain</option>
-<option value="statue">Statue</option>
-
-</select>
-
-<!-- PRODUCT GRID -->
-
-<div id="productGrid"
-class="grid grid-cols-4 gap-6">
-
-<div class="product statue bg-white p-4 rounded shadow">
-
-<img src="https://via.placeholder.com/200">
-
-<h3 class="font-semibold mt-2">
-Mini Statue
-</h3>
-
-<p class="text-orange-500">
-Rp150.000
-</p>
-
-</div>
-
-<div class="product keychain bg-white p-4 rounded shadow">
-
-<img src="https://via.placeholder.com/200">
-
-<h3 class="font-semibold mt-2">
-Custom Keychain
-</h3>
-
-<p class="text-orange-500">
-Rp30.000
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-<script>
-
-function searchProduct(){
-
-let input=document.getElementById("searchInput").value.toLowerCase()
-
-let products=document.querySelectorAll(".product")
-
-products.forEach(p=>{
-
-let text=p.innerText.toLowerCase()
-
-p.style.display=text.includes(input)?"block":"none"
-
-})
-
-}
-
-function filterCategory(){
-
-let category=document.getElementById("categoryFilter").value
-
-let products=document.querySelectorAll(".product")
-
-products.forEach(p=>{
-
-if(category=="all" || p.classList.contains(category))
-
-p.style.display="block"
-
-else
-
-p.style.display="none"
-
-})
-
-}
-
-</script>
-
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="product statue group bg-white p-5 rounded-[2rem] shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-slate-100">
+                <div class="relative overflow-hidden rounded-[1.5rem] mb-4 aspect-square bg-slate-100">
+                    <img src="https://via.placeholder.com/400" class="object-cover w-full h-full group-hover:scale-110 transition duration-500">
+                    <span class="absolute top-3 left-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-orange-600">3D Model</span>
+                </div>
+                <h3 class="font-bold text-xl mb-1 text-slate-800">Astronaut Mini Statue</h3>
+                <p class="text-orange-500 font-black text-lg mb-4">Rp150.000</p>
+                <button class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-orange-500 transition">
+                    Tambah ke Keranjang
+                </button>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>

@@ -1,44 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
+<body class="bg-slate-900 text-white">
+    <div class="max-w-4xl mx-auto py-24 px-6">
+        <div class="text-center mb-16">
+            <h1 class="text-5xl font-black mb-4">AI Design Studio ✨</h1>
+            <p class="text-slate-400 text-lg">Deskripsikan ide kamu, biarkan AI merancang souvenir 3D-nya.</p>
+        </div>
 
-<title>Custom AI</title>
+        <div class="bg-slate-800 p-10 rounded-[3rem] border border-slate-700 shadow-2xl shadow-orange-500/10">
+            <div class="grid md:grid-cols-2 gap-10">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-400 mb-3 uppercase tracking-widest">Langkah 1: Upload Referensi</label>
+                        <div class="relative group cursor-pointer border-2 border-dashed border-slate-600 rounded-3xl p-8 text-center hover:border-orange-500 transition">
+                            <input type="file" class="absolute inset-0 opacity-0 cursor-pointer">
+                            <p class="text-slate-500 font-medium">Klik atau tarik gambar ke sini</p>
+                        </div>
+                    </div>
 
-<script src="https://cdn.tailwindcss.com"></script>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-400 mb-3 uppercase tracking-widest">Langkah 2: Deskripsi AI</label>
+                        <textarea rows="4" class="w-full bg-slate-900 border-none ring-1 ring-slate-700 focus:ring-2 focus:ring-orange-500 rounded-2xl p-4 text-white placeholder-slate-600" placeholder="Contoh: Buatkan gantungan kunci berbentuk logo Uni Inside Media dengan tekstur kristal..."></textarea>
+                    </div>
 
-</head>
+                    <button class="w-full bg-orange-500 hover:bg-orange-600 text-white py-5 rounded-2xl font-black text-lg shadow-xl shadow-orange-500/20 transition-all active:scale-95">
+                        GENERATE 3D DESIGN
+                    </button>
+                </div>
 
-<body class="bg-amber-50">
-
-<div class="max-w-xl mx-auto py-20">
-
-<h1 class="text-3xl font-bold text-center mb-6">
-AI Souvenir Generator
-</h1>
-
-<div class="bg-white p-8 rounded shadow">
-
-<label>Upload Photo</label>
-
-<input type="file"
-class="border w-full p-2 mb-4">
-
-<label>Description</label>
-
-<textarea
-class="border w-full p-2 mb-4"
-placeholder="Describe your souvenir"></textarea>
-
-<button
-class="bg-orange-500 text-white w-full py-3 rounded">
-
-Generate Design
-
-</button>
-
-</div>
-
-</div>
-
+                <div class="bg-slate-900 rounded-[2rem] border border-slate-700 flex flex-col items-center justify-center p-6 min-h-[350px]">
+                    <div class="w-20 h-20 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin mb-4"></div>
+                    <p class="text-slate-500 font-medium">Menunggu perintah anda...</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-</html>
