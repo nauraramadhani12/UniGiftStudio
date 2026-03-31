@@ -34,9 +34,16 @@
                 <a href="custom-ai.html" class="hover:text-orange-500 transition">✨ Custom AI</a>
             </div>
 
-            <div class="flex items-center gap-5">
+            <div class="flex items-center gap-6">
+                <a href="cart.html" class="relative text-slate-600 hover:text-orange-500 transition group" title="Lihat Keranjang">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    <span id="cartBadge" class="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white hidden">0</span>
+                </a>
+
                 <a href="login.html" class="font-semibold text-slate-600 hover:text-orange-500 transition">Login</a>
-                <a href="register.html" class="bg-slate-900 text-white px-6 py-2.5 rounded-full font-bold hover:bg-orange-600 transition shadow-lg shadow-slate-200">
+                <a href="register.html" class="bg-slate-900 text-white px-6 py-2.5 rounded-full font-bold hover:bg-orange-600 transition shadow-lg shadow-slate-200 hidden sm:block">
                     Join Now
                 </a>
             </div>
@@ -102,61 +109,70 @@
         </div>
 
         <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="product statue bg-white rounded-3xl p-4 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer">
-                <div class="aspect-square bg-slate-100 rounded-2xl mb-4 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=400&q=80" alt="Mini Statue" class="w-full h-full object-cover">
-                    <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full text-slate-700">Statue</span>
-                </div>
-                <h3 class="font-bold text-lg text-slate-800 line-clamp-1 px-1">Mini Statue Kustom</h3>
-                <p class="text-slate-500 text-sm mt-1 mb-4 px-1">Pajangan meja estetik.</p>
-                <div class="flex justify-between items-center px-1">
+            
+            <div class="product statue bg-white rounded-3xl p-4 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition duration-300 relative flex flex-col">
+                <a href="product-detail.html" class="block cursor-pointer flex-grow">
+                    <div class="aspect-square bg-slate-100 rounded-2xl mb-4 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=400&q=80" alt="Mini Statue" class="w-full h-full object-cover">
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full text-slate-700">Statue</span>
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-800 line-clamp-1 px-1 hover:text-orange-500 transition">Mini Statue Kustom</h3>
+                    <p class="text-slate-500 text-sm mt-1 mb-4 px-1">Pajangan meja estetik.</p>
+                </a>
+                <div class="flex justify-between items-center px-1 mt-auto">
                     <p class="text-orange-500 font-extrabold text-xl">Rp 150.000</p>
-                    <button class="bg-slate-50 hover:bg-orange-500 hover:text-white text-slate-700 w-10 h-10 rounded-full flex items-center justify-center transition border border-slate-200 hover:border-orange-500">
+                    <button onclick="addToCart()" class="bg-slate-50 hover:bg-orange-500 hover:text-white text-slate-700 w-10 h-10 rounded-full flex items-center justify-center transition border border-slate-200 hover:border-orange-500 z-10 relative">
                         +
                     </button>
                 </div>
             </div>
 
-            <div class="product keychain bg-white rounded-3xl p-4 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer">
-                <div class="aspect-square bg-slate-100 rounded-2xl mb-4 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1579811216948-6f57c19376a5?auto=format&fit=crop&w=400&q=80" alt="Keychain" class="w-full h-full object-cover">
-                    <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full text-slate-700">Keychain</span>
-                </div>
-                <h3 class="font-bold text-lg text-slate-800 line-clamp-1 px-1">Gantungan Kunci Inisial</h3>
-                <p class="text-slate-500 text-sm mt-1 mb-4 px-1">Aksesori minimalis nan keren.</p>
-                <div class="flex justify-between items-center px-1">
+            <div class="product keychain bg-white rounded-3xl p-4 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition duration-300 relative flex flex-col">
+                <a href="product-detail.html" class="block cursor-pointer flex-grow">
+                    <div class="aspect-square bg-slate-100 rounded-2xl mb-4 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1579811216948-6f57c19376a5?auto=format&fit=crop&w=400&q=80" alt="Keychain" class="w-full h-full object-cover">
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full text-slate-700">Keychain</span>
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-800 line-clamp-1 px-1 hover:text-orange-500 transition">Gantungan Kunci Inisial</h3>
+                    <p class="text-slate-500 text-sm mt-1 mb-4 px-1">Aksesori minimalis nan keren.</p>
+                </a>
+                <div class="flex justify-between items-center px-1 mt-auto">
                     <p class="text-orange-500 font-extrabold text-xl">Rp 30.000</p>
-                    <button class="bg-slate-50 hover:bg-orange-500 hover:text-white text-slate-700 w-10 h-10 rounded-full flex items-center justify-center transition border border-slate-200 hover:border-orange-500">
+                    <button onclick="addToCart()" class="bg-slate-50 hover:bg-orange-500 hover:text-white text-slate-700 w-10 h-10 rounded-full flex items-center justify-center transition border border-slate-200 hover:border-orange-500 z-10 relative">
                         +
                     </button>
                 </div>
             </div>
 
-            <div class="product keychain bg-white rounded-3xl p-4 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer">
-                <div class="aspect-square bg-slate-900 rounded-2xl mb-4 overflow-hidden relative flex items-center justify-center">
-                    <span class="text-5xl text-white">🏍️</span>
-                    <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full text-slate-700">Keychain</span>
-                </div>
-                <h3 class="font-bold text-lg text-slate-800 line-clamp-1 px-1">Night Ride Glow Tag</h3>
-                <p class="text-slate-500 text-sm mt-1 mb-4 px-1">Menyala saat gelap (Glow).</p>
-                <div class="flex justify-between items-center px-1">
+            <div class="product keychain bg-white rounded-3xl p-4 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition duration-300 relative flex flex-col">
+                <a href="product-detail.html" class="block cursor-pointer flex-grow">
+                    <div class="aspect-square bg-slate-900 rounded-2xl mb-4 overflow-hidden relative flex items-center justify-center">
+                        <span class="text-5xl text-white">🏍️</span>
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full text-slate-700">Keychain</span>
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-800 line-clamp-1 px-1 hover:text-orange-500 transition">Night Ride Glow Tag</h3>
+                    <p class="text-slate-500 text-sm mt-1 mb-4 px-1">Menyala saat gelap (Glow).</p>
+                </a>
+                <div class="flex justify-between items-center px-1 mt-auto">
                     <p class="text-orange-500 font-extrabold text-xl">Rp 45.000</p>
-                    <button class="bg-slate-50 hover:bg-orange-500 hover:text-white text-slate-700 w-10 h-10 rounded-full flex items-center justify-center transition border border-slate-200 hover:border-orange-500">
+                    <button onclick="addToCart()" class="bg-slate-50 hover:bg-orange-500 hover:text-white text-slate-700 w-10 h-10 rounded-full flex items-center justify-center transition border border-slate-200 hover:border-orange-500 z-10 relative">
                         +
                     </button>
                 </div>
             </div>
 
-            <div class="product socks bg-white rounded-3xl p-4 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition duration-300 cursor-pointer">
-                <div class="aspect-square bg-orange-100 rounded-2xl mb-4 overflow-hidden relative flex items-center justify-center">
-                    <span class="text-5xl">🧦</span>
-                    <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full text-slate-700">Socks</span>
-                </div>
-                <h3 class="font-bold text-lg text-slate-800 line-clamp-1 px-1">Custom Pattern Socks</h3>
-                <p class="text-slate-500 text-sm mt-1 mb-4 px-1">Desain pola eksklusif AI.</p>
-                <div class="flex justify-between items-center px-1">
+            <div class="product socks bg-white rounded-3xl p-4 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition duration-300 relative flex flex-col">
+                <a href="product-detail.html" class="block cursor-pointer flex-grow">
+                    <div class="aspect-square bg-orange-100 rounded-2xl mb-4 overflow-hidden relative flex items-center justify-center">
+                        <span class="text-5xl">🧦</span>
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full text-slate-700">Socks</span>
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-800 line-clamp-1 px-1 hover:text-orange-500 transition">Custom Pattern Socks</h3>
+                    <p class="text-slate-500 text-sm mt-1 mb-4 px-1">Desain pola eksklusif AI.</p>
+                </a>
+                <div class="flex justify-between items-center px-1 mt-auto">
                     <p class="text-orange-500 font-extrabold text-xl">Rp 85.000</p>
-                    <button class="bg-slate-50 hover:bg-orange-500 hover:text-white text-slate-700 w-10 h-10 rounded-full flex items-center justify-center transition border border-slate-200 hover:border-orange-500">
+                    <button onclick="addToCart()" class="bg-slate-50 hover:bg-orange-500 hover:text-white text-slate-700 w-10 h-10 rounded-full flex items-center justify-center transition border border-slate-200 hover:border-orange-500 z-10 relative">
                         +
                     </button>
                 </div>
@@ -168,6 +184,24 @@
 
     <script>
         let currentCategory = 'all';
+        let cartItemCount = 0; // Variabel untuk menyimpan jumlah keranjang
+
+        // Fungsi untuk menambahkan ke keranjang
+        function addToCart() {
+            cartItemCount++; // Tambah angka
+            
+            let badge = document.getElementById('cartBadge');
+            badge.innerText = cartItemCount; // Update teks di badge
+            badge.classList.remove('hidden'); // Munculkan badge
+            
+            // Tambahkan animasi bounce kecil biar kelihatan interaktif
+            badge.classList.add('animate-bounce');
+            
+            // Hapus animasi bounce setelah 1 detik biar nggak lompat-lompat terus
+            setTimeout(() => {
+                badge.classList.remove('animate-bounce');
+            }, 1000);
+        }
 
         function setCategory(category, element) {
             currentCategory = category;
@@ -194,7 +228,7 @@
                 let matchesCategory = (currentCategory === "all" || p.classList.contains(currentCategory));
 
                 if (matchesSearch && matchesCategory) {
-                    p.style.display = "block";
+                    p.style.display = "flex"; // Ubah jadi flex agar selaras dengan styling baru
                 } else {
                     p.style.display = "none";
                 }

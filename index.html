@@ -19,7 +19,7 @@
     </style>
 </head>
 
-<body class="bg-slate-50 text-slate-900">
+<body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen">
 
     <nav class="glass sticky top-0 z-50 border-b border-slate-200">
         <div class="max-w-7xl mx-auto flex justify-between items-center p-5">
@@ -43,41 +43,92 @@
         </div>
     </nav>
 
-    <section class="relative overflow-hidden pt-20 pb-32">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center relative z-10">
-            <div class="md:w-1/2 text-left">
-                <span class="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-widest text-orange-600 uppercase bg-orange-100 rounded-full">
-                    The Future of Gifting
-                </span>
-                <h1 class="text-6xl md:text-7xl font-extrabold leading-[1.1] mb-8">
-                    Ciptakan <span class="text-orange-500">Souvenir 3D</span> Lewat Imajinasi AI
-                </h1>
-                <p class="text-xl text-slate-500 mb-10 max-w-lg leading-relaxed">
-                    Platform e-commerce revolusioner untuk kustomisasi souvenir berbasis AI dan pencetakan 3D berkualitas tinggi.
-                </p>
-                <div class="flex gap-4">
-                    <a href="products.html" class="bg-orange-500 text-white px-10 py-4 rounded-2xl font-bold hover:bg-orange-600 transition shadow-2xl shadow-orange-200">
-                        Mulai Belanja
-                    </a>
-                    <a href="custom-ai.html" class="bg-white border border-slate-200 px-10 py-4 rounded-2xl font-bold hover:bg-slate-50 transition">
-                        Coba AI Custom
-                    </a>
+    <main class="flex-grow">
+        <section class="relative overflow-hidden pt-20 pb-32">
+            <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center relative z-10">
+                <div class="md:w-1/2 text-left">
+                    <span class="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-widest text-orange-600 uppercase bg-orange-100 rounded-full">
+                        The Future of Gifting
+                    </span>
+                    <h1 class="text-6xl md:text-7xl font-extrabold leading-[1.1] mb-8">
+                        Ciptakan <span class="text-orange-500">Souvenir 3D</span> Lewat Imajinasi AI
+                    </h1>
+                    <p class="text-xl text-slate-500 mb-10 max-w-lg leading-relaxed">
+                        Platform e-commerce revolusioner untuk kustomisasi souvenir berbasis AI dan pencetakan 3D berkualitas tinggi.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="products.html" class="bg-orange-500 text-white px-10 py-4 rounded-2xl font-bold hover:bg-orange-600 transition shadow-2xl shadow-orange-200">
+                            Mulai Belanja
+                        </a>
+                        <a href="custom-ai.html" class="bg-white border border-slate-200 px-10 py-4 rounded-2xl font-bold hover:bg-slate-50 transition">
+                            Coba AI Custom
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="md:w-1/2 mt-16 md:mt-0 px-10">
-                <div class="relative w-full aspect-square bg-gradient-to-tr from-orange-100 to-yellow-50 rounded-[4rem] flex items-center justify-center border-8 border-white shadow-2xl rotate-3">
-                    <span class="text-orange-300 font-black text-8xl opacity-20">3D PREVIEW</span>
-                    <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-3xl shadow-xl flex items-center gap-4 animate-bounce">
-                        <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center">✓</div>
-                        <div>
-                            <p class="font-bold text-sm">AI Success!</p>
-                            <p class="text-xs text-slate-400">Design Generated</p>
+                <div class="md:w-1/2 mt-16 md:mt-0 px-10">
+                    <div class="relative w-full aspect-square bg-gradient-to-tr from-orange-100 to-yellow-50 rounded-[4rem] flex items-center justify-center border-8 border-white shadow-2xl rotate-3">
+                        <span class="text-orange-300 font-black text-8xl opacity-20">3D PREVIEW</span>
+                        <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-3xl shadow-xl flex items-center gap-4 animate-bounce">
+                            <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center">✓</div>
+                            <div>
+                                <p class="font-bold text-sm">AI Success!</p>
+                                <p class="text-xs text-slate-400">Design Generated</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
+    </main>
+
+    <footer class="relative bg-slate-50 mt-10">
+        <div class="relative w-full overflow-hidden leading-[0]">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-[80px] md:h-[130px]">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C79.44,115.8,162.15,123.6,244.6,112.58,271.42,108.91,296.86,102.77,321.39,56.44Z" class="fill-orange-400 opacity-80"></path>
+                <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0Z" class="fill-slate-900"></path>
+            </svg>
         </div>
-    </section>
+
+        <div class="bg-slate-900 text-white pt-10 pb-16">
+            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+                
+                <div class="flex flex-col items-center md:items-start gap-6">
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center text-white font-bold text-xl">U</div>
+                        <h2 class="text-2xl font-extrabold tracking-tight">Uni Gift <span class="text-orange-500">Studio</span></h2>
+                    </div>
+                    <a href="#" class="border-2 border-orange-500 text-orange-500 px-8 py-2.5 rounded-full font-bold tracking-wide hover:bg-orange-500 hover:text-white transition shadow-[0_0_15px_rgba(249,115,22,0.3)]">
+                        CONTACT US
+                    </a>
+                </div>
+
+                <div class="flex flex-col items-center gap-4 text-slate-300 font-bold text-sm tracking-widest border-t md:border-t-0 md:border-l border-slate-700 pt-8 md:pt-0">
+                    <a href="index.html" class="hover:text-orange-500 transition">HOME</a>
+                    <a href="products.html" class="hover:text-orange-500 transition">PRODUCTS</a>
+                    <a href="custom-ai.html" class="hover:text-orange-500 transition">CUSTOM AI</a>
+                    <a href="#" class="hover:text-orange-500 transition">ABOUT</a>
+                </div>
+
+                <div class="flex justify-center md:justify-end gap-6 border-t md:border-t-0 md:border-l border-slate-700 pt-8 md:pt-0 md:pl-12">
+                    <a href="#" class="text-slate-400 hover:text-orange-500 transition">
+                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    <a href="#" class="text-slate-400 hover:text-orange-500 transition">
+                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                        </svg>
+                    </a>
+                    <a href="#" class="text-slate-400 hover:text-orange-500 transition">
+                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 </body>
 
