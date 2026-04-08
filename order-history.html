@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Pesanan | Uni Gift Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen">
+
+    <nav class="glass sticky top-0 z-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto flex justify-between items-center p-5">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-orange-200">U</div>
+                <h1 class="text-2xl font-extrabold tracking-tight">Uni Gift <span class="text-orange-500">Studio</span></h1>
+            </div>
+            <div class="hidden md:flex space-x-10 font-semibold text-slate-600">
+                <a href="index.html" class="hover:text-orange-500 transition">Home</a>
+                <a href="products.html" class="hover:text-orange-500 transition">Products</a>
+                <a href="custom-ai.html" class="hover:text-orange-500 transition">✨ Custom AI</a>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="cart.html" class="relative text-slate-600 hover:text-orange-500 transition group">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                </a>
+                <div class="relative cursor-pointer flex items-center gap-2 text-slate-700 font-bold hover:text-orange-500 transition">
+                    <div class="w-9 h-9 bg-slate-900 text-white rounded-full flex items-center justify-center text-sm">NA</div>
+                    <span class="hidden sm:block">Naura</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-5xl mx-auto px-4 sm:px-6 py-8 md:py-12 w-full">
+        <h2 class="text-3xl font-extrabold mb-8 text-slate-800">Riwayat Pesanan</h2>
+
+        <div class="flex items-center gap-3 overflow-x-auto no-scrollbar pb-4 mb-6 border-b border-slate-200" id="tabContainer">
+            <button onclick="filterOrders('all', this)" class="tab-btn active shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition bg-[#1e1b4b] text-white shadow-lg shadow-slate-200 border border-[#1e1b4b]">Semua Pesanan</button>
+            <button onclick="filterOrders('belum-bayar', this)" class="tab-btn shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition bg-white text-slate-600 border border-slate-200 hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50">Belum Bayar <span class="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full ml-1">1</span></button>
+            <button onclick="filterOrders('diproses', this)" class="tab-btn shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition bg-white text-slate-600 border border-slate-200 hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50">Diproses</button>
+            <button onclick="filterOrders('dikirim', this)" class="tab-btn shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition bg-white text-slate-600 border border-slate-200 hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50">Dikirim</button>
+            <button onclick="filterOrders('selesai', this)" class="tab-btn shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition bg-white text-slate-600 border border-slate-200 hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50">Selesai</button>
+        </div>
+
+        <div class="flex flex-col gap-6" id="ordersContainer">
+
+            <div class="order-card belum-bayar bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden hover:border-slate-300 transition-colors">
+                <div class="bg-slate-50 border-b border-slate-100 px-6 py-4 flex justify-between items-center">
+                    <div class="text-sm font-extrabold text-slate-800">#UGS-1002931 <span class="text-slate-400 font-medium ml-2">Baru saja</span></div>
+                    <span class="bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-extrabold uppercase tracking-wide">Belum Bayar</span>
+                </div>
+                <div class="p-6 flex flex-col md:flex-row gap-6">
+                    <div class="flex gap-4 flex-grow">
+                        <div class="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center text-3xl">🗿</div>
+                        <div>
+                            <h3 class="font-extrabold text-slate-800 text-lg">Mini Statue Kustom</h3>
+                            <p class="text-xs font-bold text-slate-400 mb-2">1 x Rp 150.000</p>
+                        </div>
+                    </div>
+                    <div class="md:text-right flex justify-between items-end">
+                        <span class="text-xl font-black text-slate-900">Rp 150.000</span>
+                    </div>
+                </div>
+                <div class="bg-white border-t border-slate-100 px-6 py-4 flex justify-end">
+                    <button onclick="window.location.href='checkout.html'" class="bg-orange-500 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-orange-600 transition shadow-md text-sm">Bayar Sekarang</button>
+                </div>
+            </div>
+
+            <div class="order-card dikirim bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden hover:border-slate-300 transition-colors">
+                <div class="bg-slate-50 border-b border-slate-100 px-6 py-4 flex justify-between items-center">
+                    <div class="text-sm font-extrabold text-slate-800">#UGS-9928310 <span class="text-slate-400 font-medium ml-2">30 Mar 2026</span></div>
+                    <span class="bg-blue-100 text-blue-600 px-3 py-1.5 rounded-lg text-xs font-extrabold uppercase tracking-wide">Sedang Dikirim</span>
+                </div>
+                <div class="p-6 flex flex-col md:flex-row gap-6">
+                    <div class="flex gap-4 flex-grow">
+                        <div class="w-20 h-20 bg-slate-900 rounded-2xl flex items-center justify-center text-3xl">🏍️</div>
+                        <div>
+                            <h3 class="font-extrabold text-slate-800 text-lg">Night Ride Glow Tag</h3>
+                            <p class="text-xs font-bold text-slate-400 mb-2">Varian: Hijau Glow | Kustom: "NAURA"</p>
+                        </div>
+                    </div>
+                    <div class="md:text-right flex justify-between items-end">
+                        <span class="text-xl font-black text-slate-900">Rp 65.000</span>
+                    </div>
+                </div>
+                <div class="bg-white border-t border-slate-100 px-6 py-4 flex justify-between items-center gap-4">
+                    <p class="text-sm font-semibold text-slate-500">Paket telah sampai di fasilitas transit Jakarta Pusat.</p>
+                    <div class="flex gap-3">
+                        <button onclick="window.location.href='invoice.html'" class="border border-slate-300 text-slate-700 px-6 py-2.5 rounded-xl font-bold hover:bg-slate-50 transition text-sm">Lihat Invoice</button>
+                        <button onclick="window.location.href='track-order.html'" class="bg-[#1e1b4b] text-white px-6 py-2.5 rounded-xl font-bold hover:bg-orange-500 transition shadow-md text-sm">Lacak Pesanan</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-card selesai bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden hover:border-slate-300 transition-colors">
+                <div class="bg-slate-50 border-b border-slate-100 px-6 py-4 flex justify-between items-center">
+                    <div class="text-sm font-extrabold text-slate-800">#UGS-8810294 <span class="text-slate-400 font-medium ml-2">15 Mar 2026</span></div>
+                    <span class="bg-green-100 text-green-600 px-3 py-1.5 rounded-lg text-xs font-extrabold uppercase tracking-wide">Selesai</span>
+                </div>
+                <div class="p-6 flex flex-col md:flex-row gap-6">
+                    <div class="flex gap-4 flex-grow">
+                        <div class="w-20 h-20 bg-orange-100 rounded-2xl flex items-center justify-center text-3xl">🧦</div>
+                        <div>
+                            <h3 class="font-extrabold text-slate-800 text-lg">Custom Pattern Socks</h3>
+                            <p class="text-xs font-bold text-slate-400 mb-2">Pola AI: Kucing Galaxy | Ukuran: M</p>
+                        </div>
+                    </div>
+                    <div class="md:text-right flex justify-between items-end">
+                        <span class="text-xl font-black text-slate-900">Rp 170.000</span>
+                    </div>
+                </div>
+                <div class="bg-white border-t border-slate-100 px-6 py-4 flex justify-between items-center gap-4">
+                    <p class="text-sm font-semibold text-slate-500">Tolong berikan ulasan untuk pesanan ini!</p>
+                    <div class="flex gap-3">
+                        <button onclick="window.location.href='review.html'" class="border border-orange-500 text-orange-500 px-6 py-2.5 rounded-xl font-bold hover:bg-orange-50 transition text-sm">Beri Ulasan</button>
+                        <button onclick="window.location.href='products.html'" class="bg-[#1e1b4b] text-white px-6 py-2.5 rounded-xl font-bold hover:bg-orange-500 transition shadow-md text-sm">Beli Lagi</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Logika untuk Tab Filter
+        function filterOrders(status, btnElement) {
+            // Ubah gaya tombol tab
+            let tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => {
+                tab.className = "tab-btn shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition bg-white text-slate-600 border border-slate-200 hover:border-orange-500 hover:text-orange-500 hover:bg-orange-50";
+            });
+            btnElement.className = "tab-btn active shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition bg-[#1e1b4b] text-white shadow-lg shadow-slate-200 border border-[#1e1b4b]";
+
+            // Filter kartu pesanan
+            let cards = document.querySelectorAll('.order-card');
+            cards.forEach(card => {
+                if(status === 'all' || card.classList.contains(status)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

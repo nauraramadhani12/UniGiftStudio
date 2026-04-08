@@ -120,7 +120,7 @@
                         <span id="finalPrice" class="text-2xl font-black text-slate-900">Rp 0</span>
                     </div>
                     
-                    <button id="checkoutBtn" class="w-full bg-[#1e1b4b] text-white py-4 rounded-xl font-bold text-sm tracking-widest hover:bg-orange-500 transition shadow-lg shadow-slate-200/50 mb-4">
+                    <button id="checkoutBtn" onclick="window.location.href='checkout.html'" class="w-full bg-[#1e1b4b] text-white py-4 rounded-xl font-bold text-sm tracking-widest hover:bg-orange-500 transition shadow-lg shadow-slate-200/50 mb-4">
                         PLACE ORDER
                     </button>
                     
@@ -241,10 +241,8 @@
                 });
             }
 
-            // Hitung Total Diskon
             let totalDiscount = totalMRP - totalPrice;
 
-            // Update Semua Teks di Layar
             document.getElementById("cartItemCountHeader").innerText = `${totalItems} Items`;
             document.getElementById("summaryItemCount").innerText = totalItems;
             
@@ -252,7 +250,6 @@
             document.getElementById("summaryDiscount").innerText = `- ${formatRupiah(totalDiscount)}`;
             document.getElementById("finalPrice").innerText = formatRupiah(totalPrice);
             
-            // Update Teks Hemat (Saving)
             const savingElement = document.getElementById("savingText");
             if(totalDiscount > 0) {
                 savingElement.innerText = `You will save ${formatRupiah(totalDiscount)} on this order`;
