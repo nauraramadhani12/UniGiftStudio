@@ -27,7 +27,7 @@
                     </a>
                     <a href="admin-custom-ai.html" class="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold">
                         <div class="flex items-center gap-3"><span class="text-xl">✨</span> Custom AI</div>
-                        <span class="bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">3 Baru</span>
+                        <span id="badge-ai-nav" class="bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">...</span>
                     </a>
                     <a href="admin-katalog.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold">
                         <span class="text-xl">🛍️</span> Katalog Produk
@@ -39,105 +39,206 @@
             </div>
         </div>
         <div class="p-4 border-t border-white/5">
-            <a href="login.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold text-slate-400 hover:text-red-400">
-                Keluar
-            </a>
+            <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold text-slate-400 hover:text-red-400 text-left">Keluar</button>
         </div>
     </aside>
 
     <div class="flex-1 flex flex-col overflow-hidden">
         <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0">
             <h2 class="text-xl font-bold text-slate-800">Semua Pesanan</h2>
-            <div class="flex items-center gap-6">
+            <div class="flex items-center gap-4">
                 <button class="text-slate-400 hover:text-orange-500 transition relative">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                     <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
                 </button>
-                <div class="w-10 h-10 bg-orange-100 text-orange-600 font-bold rounded-full flex items-center justify-center border border-orange-200 cursor-pointer">AU</div>
+                <div id="avatar-admin" class="w-10 h-10 bg-orange-100 text-orange-600 font-bold rounded-full flex items-center justify-center border border-orange-200 cursor-pointer">AU</div>
             </div>
         </header>
 
         <main class="flex-1 overflow-y-auto p-8">
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                 <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between gap-4">
-                    <div class="flex gap-2">
-                        <button onclick="filterTable('all', this)" class="filter-btn bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-bold shadow transition">Semua</button>
-                        <button onclick="filterTable('perlu-dikirim', this)" class="filter-btn bg-white border border-slate-200 text-slate-600 hover:text-orange-500 px-4 py-2 rounded-lg text-sm font-bold transition">Perlu Dikirim</button>
-                        <button onclick="filterTable('selesai', this)" class="filter-btn bg-white border border-slate-200 text-slate-600 hover:text-orange-500 px-4 py-2 rounded-lg text-sm font-bold transition">Selesai</button>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="setFilter('all', this)" class="filter-btn bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-bold shadow transition">
+                            Semua <span id="count-all" class="ml-1 opacity-70"></span>
+                        </button>
+                        <button onclick="setFilter('diproses', this)" class="filter-btn bg-white border border-slate-200 text-slate-600 hover:text-orange-500 px-4 py-2 rounded-lg text-sm font-bold transition">
+                            Diproses <span id="count-diproses" class="ml-1 opacity-70 text-yellow-600"></span>
+                        </button>
+                        <button onclick="setFilter('dikirim', this)" class="filter-btn bg-white border border-slate-200 text-slate-600 hover:text-orange-500 px-4 py-2 rounded-lg text-sm font-bold transition">
+                            Dikirim <span id="count-dikirim" class="ml-1 opacity-70 text-blue-600"></span>
+                        </button>
+                        <button onclick="setFilter('selesai', this)" class="filter-btn bg-white border border-slate-200 text-slate-600 hover:text-orange-500 px-4 py-2 rounded-lg text-sm font-bold transition">
+                            Selesai <span id="count-selesai" class="ml-1 opacity-70 text-green-600"></span>
+                        </button>
+                        <button onclick="setFilter('belum_bayar', this)" class="filter-btn bg-white border border-slate-200 text-slate-600 hover:text-orange-500 px-4 py-2 rounded-lg text-sm font-bold transition">
+                            Belum Bayar
+                        </button>
+                        <button onclick="setFilter('dibatalkan', this)" class="filter-btn bg-white border border-slate-200 text-slate-600 hover:text-orange-500 px-4 py-2 rounded-lg text-sm font-bold transition">
+                            Dibatalkan
+                        </button>
                     </div>
-                    <input type="text" placeholder="Cari ID atau Nama..." class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 w-full sm:w-64">
+                    <input type="text" id="searchInput" oninput="renderTable()" placeholder="Cari ID atau nama..." class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 w-full sm:w-64">
                 </div>
 
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-50 text-slate-400 text-xs uppercase tracking-widest border-b border-slate-200">
-                            <th class="p-6 font-bold">ID Pesanan</th>
-                            <th class="p-6 font-bold">Tanggal</th>
-                            <th class="p-6 font-bold">Pelanggan</th>
-                            <th class="p-6 font-bold">Total Tagihan</th>
-                            <th class="p-6 font-bold">Status</th>
-                            <th class="p-6 font-bold text-right">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-sm font-semibold text-slate-700 divide-y divide-slate-100">
-                        <tr class="order-row hover:bg-slate-50 transition" data-status="perlu-dikirim">
-                            <td class="p-6 font-bold text-slate-900">#UGS-10293</td>
-                            <td class="p-6 text-slate-500">30 Mar 2026</td>
-                            <td class="p-6">Naura</td>
-                            <td class="p-6 font-bold">Rp 145.000</td>
-                            <td class="p-6"><span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold">Perlu Review AI</span></td>
-                            <td class="p-6 text-right"><a href="admin-detail-pesanan.html" class="text-orange-500 hover:text-orange-600 font-bold">Detail</a></td>
-                        </tr>
-                        <tr class="order-row hover:bg-slate-50 transition" data-status="perlu-dikirim">
-                            <td class="p-6 font-bold text-slate-900">#UGS-10292</td>
-                            <td class="p-6 text-slate-500">29 Mar 2026</td>
-                            <td class="p-6">Budi Santoso</td>
-                            <td class="p-6 font-bold">Rp 45.000</td>
-                            <td class="p-6"><span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-bold">Sedang Dicetak 3D</span></td>
-                            <td class="p-6 text-right"><a href="admin-detail-pesanan.html" class="text-orange-500 hover:text-orange-600 font-bold">Detail</a></td>
-                        </tr>
-                        <tr class="order-row hover:bg-slate-50 transition" data-status="selesai">
-                            <td class="p-6 font-bold text-slate-900">#UGS-10291</td>
-                            <td class="p-6 text-slate-500">28 Mar 2026</td>
-                            <td class="p-6">Andi Wijaya</td>
-                            <td class="p-6 font-bold">Rp 170.000</td>
-                            <td class="p-6"><span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-bold">Dikirim</span></td>
-                            <td class="p-6 text-right"><a href="admin-detail-pesanan.html" class="text-orange-500 hover:text-orange-600 font-bold">Detail</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="p-6 border-t border-slate-100 text-center text-sm text-slate-400 font-semibold" id="tableFooterText">
-                    Menampilkan 3 pesanan terbaru
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-400 text-xs uppercase tracking-widest border-b border-slate-200">
+                                <th class="p-6 font-bold">ID Pesanan</th>
+                                <th class="p-6 font-bold">Tanggal</th>
+                                <th class="p-6 font-bold">Pelanggan</th>
+                                <th class="p-6 font-bold">Total Tagihan</th>
+                                <th class="p-6 font-bold">Kurir / Resi</th>
+                                <th class="p-6 font-bold">Status</th>
+                                <th class="p-6 font-bold text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderTbody" class="text-sm font-semibold text-slate-700 divide-y divide-slate-100">
+                            <tr><td colspan="7" class="p-8 text-center text-slate-400">Memuat pesanan...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="p-6 border-t border-slate-100 text-center text-sm text-slate-400 font-semibold" id="tableFooter">
+                    Memuat data...
                 </div>
             </div>
         </main>
     </div>
 
     <script>
-        function filterTable(status, btnElement) {
-            // Reset gaya semua tombol
-            const buttons = document.querySelectorAll('.filter-btn');
-            buttons.forEach(btn => {
-                btn.className = "filter-btn bg-white border border-slate-200 text-slate-600 hover:text-orange-500 px-4 py-2 rounded-lg text-sm font-bold transition";
-            });
-            // Set tombol aktif
-            btnElement.className = "filter-btn bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-bold shadow transition";
+        const API_BASE = 'http://localhost:3000';
 
-            // Filter baris
-            const rows = document.querySelectorAll('.order-row');
-            let count = 0;
-            rows.forEach(row => {
-                if (status === 'all' || row.dataset.status === status) {
-                    row.style.display = '';
-                    count++;
-                } else {
-                    row.style.display = 'none';
-                }
-            });
+        const token = localStorage.getItem('adminToken');
+        if (!token) window.location.href = 'login.html?next=admin';
 
-            // Update teks bawah tabel
-            document.getElementById('tableFooterText').innerText = `Menampilkan ${count} pesanan`;
+        function authHeader() {
+            return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` };
         }
+
+        function logout() {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            window.location.href = 'login.html?next=admin';
+        }
+
+        const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
+        if (adminUser.nama_lengkap) {
+            const initials = adminUser.nama_lengkap.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+            document.getElementById('avatar-admin').textContent = initials;
+        }
+
+        const STATUS_BADGE = {
+            'belum_bayar': { label: 'Belum Bayar', cls: 'bg-slate-100 text-slate-600' },
+            'diproses':    { label: 'Diproses',     cls: 'bg-yellow-100 text-yellow-700' },
+            'dikirim':     { label: 'Dikirim',       cls: 'bg-blue-100 text-blue-600' },
+            'selesai':     { label: 'Selesai',       cls: 'bg-green-100 text-green-600' },
+            'dibatalkan':  { label: 'Dibatalkan',    cls: 'bg-red-100 text-red-600' },
+        };
+
+        const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+        function fmtDate(iso) {
+            if (!iso) return '—';
+            const d = new Date(iso);
+            return `${String(d.getDate()).padStart(2,'0')} ${months[d.getMonth()]} ${d.getFullYear()}`;
+        }
+
+        let allOrders = [];
+        let activeFilter = 'all';
+
+        async function loadOrders() {
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/orders`, { headers: authHeader() });
+                if (res.status === 401 || res.status === 403) {
+                    localStorage.removeItem('adminToken');
+                    window.location.href = 'login.html?next=admin';
+                    return;
+                }
+                const json = await res.json();
+                if (!json.success) throw new Error(json.message);
+                allOrders = json.data;
+                updateCounts();
+                renderTable();
+            } catch (err) {
+                document.getElementById('orderTbody').innerHTML =
+                    `<tr><td colspan="7" class="p-8 text-center text-red-500">Gagal memuat: ${err.message}</td></tr>`;
+                document.getElementById('tableFooter').textContent = '';
+            }
+        }
+
+        function updateCounts() {
+            const counts = { diproses: 0, dikirim: 0, selesai: 0 };
+            allOrders.forEach(o => { if (counts[o.status_pesanan] !== undefined) counts[o.status_pesanan]++; });
+            document.getElementById('count-all').textContent      = `(${allOrders.length})`;
+            document.getElementById('count-diproses').textContent = counts.diproses ? `(${counts.diproses})` : '';
+            document.getElementById('count-dikirim').textContent  = counts.dikirim  ? `(${counts.dikirim})`  : '';
+            document.getElementById('count-selesai').textContent  = counts.selesai  ? `(${counts.selesai})`  : '';
+        }
+
+        function setFilter(status, btn) {
+            activeFilter = status;
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.className = 'filter-btn bg-white border border-slate-200 text-slate-600 hover:text-orange-500 px-4 py-2 rounded-lg text-sm font-bold transition';
+            });
+            btn.className = 'filter-btn bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-bold shadow transition';
+            renderTable();
+        }
+
+        function renderTable() {
+            const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            const filtered = allOrders.filter(o => {
+                const matchStatus = activeFilter === 'all' || o.status_pesanan === activeFilter;
+                const matchSearch = !search
+                    || (o.kode_pesanan || '').toLowerCase().includes(search)
+                    || (o.nama_penerima || '').toLowerCase().includes(search)
+                    || (o.nama_user || '').toLowerCase().includes(search);
+                return matchStatus && matchSearch;
+            });
+
+            const tbody = document.getElementById('orderTbody');
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-400">Tidak ada pesanan ditemukan.</td></tr>`;
+                document.getElementById('tableFooter').textContent = 'Tidak ada data';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(o => {
+                const badge = STATUS_BADGE[o.status_pesanan] || { label: o.status_pesanan, cls: 'bg-slate-100 text-slate-500' };
+                const kurirCell = o.kurir
+                    ? `<div class="font-bold text-slate-800 text-xs">${o.kurir}</div>
+                       <div class="text-[10px] text-slate-400 font-mono tracking-wide">${o.nomor_resi || '— belum diisi'}</div>`
+                    : `<span class="text-xs text-slate-400 italic">Belum dikirim</span>`;
+                return `
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="p-6 font-bold text-slate-900">#${o.kode_pesanan}</td>
+                    <td class="p-6 text-slate-500 text-xs whitespace-nowrap">${fmtDate(o.created_at)}</td>
+                    <td class="p-6">
+                        <div class="font-bold text-slate-900 text-sm">${o.nama_user || o.nama_penerima || '—'}</div>
+                        <div class="text-[10px] text-slate-400">${o.nomor_telepon || ''}</div>
+                    </td>
+                    <td class="p-6 font-bold">Rp ${Number(o.total_bayar).toLocaleString('id-ID')}</td>
+                    <td class="p-6">${kurirCell}</td>
+                    <td class="p-6">
+                        <span class="${badge.cls} px-3 py-1 rounded-full text-xs font-bold">${badge.label}</span>
+                    </td>
+                    <td class="p-6 text-right">
+                        <a href="admin-detail-pesanan.html?id=${o.id}" class="text-orange-500 hover:text-orange-600 font-bold text-sm">Detail</a>
+                    </td>
+                </tr>`;
+            }).join('');
+
+            document.getElementById('tableFooter').textContent =
+                `Menampilkan ${filtered.length} dari ${allOrders.length} pesanan`;
+        }
+
+        fetch(`${API_BASE}/api/stats`)
+            .then(r => r.json())
+            .then(j => {
+                if (j.success) document.getElementById('badge-ai-nav').textContent = `${j.data.total_ai_requests ?? 0} Baru`;
+            }).catch(() => {});
+
+        window.onload = loadOrders;
     </script>
 </body>
 </html>

@@ -22,23 +22,19 @@
     </div>
 
     <a href="index.html" class="fixed top-6 left-6 md:top-8 md:left-8 z-30 flex items-center gap-2 px-5 py-2.5 bg-white/60 hover:bg-white backdrop-blur-md border border-white/60 text-slate-600 hover:text-orange-600 font-bold rounded-full transition-all shadow-sm hover:shadow-md group">
-        <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-        Kembali ke Beranda
+        <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg> Kembali
+        ke Beranda
     </a>
 
     <div class="flex flex-col min-h-screen w-full py-24 px-6 md:py-12">
-        
         <div class="w-full max-w-md m-auto relative z-10">
             <div class="bg-white/80 backdrop-blur-xl p-8 sm:p-10 rounded-[2.5rem] shadow-2xl border border-white">
-                
+
                 <div class="text-center mb-10 mt-2">
                     <div class="relative inline-flex justify-center items-center mb-6">
                         <div class="absolute inset-0 bg-orange-400 blur-lg opacity-40 rounded-full"></div>
-                        <div class="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl text-white font-black text-4xl shadow-xl border-2 border-white ring-4 ring-orange-50/50">
-                            U
-                        </div>
+                        <div class="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl text-white font-black text-4xl shadow-xl border-2 border-white ring-4 ring-orange-50/50">U</div>
                     </div>
-
                     <h2 class="text-3xl font-extrabold text-slate-900 mb-3 tracking-tight">
                         Selamat Datang! <span class="inline-block hover:rotate-12 transition-transform cursor-default origin-bottom-right">👋</span>
                     </h2>
@@ -47,12 +43,17 @@
                     </p>
                 </div>
 
-                <form action="#" method="POST" class="space-y-5">
-                    
+                <!-- Pesan sukses dari register -->
+                <div id="successBanner" class="hidden mb-5 px-4 py-3 bg-green-50 border border-green-200 rounded-xl text-sm font-bold text-green-700 text-center"></div>
+
+                <!-- Pesan error -->
+                <div id="errorBanner" class="hidden mb-5 px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-sm font-bold text-red-600 text-center"></div>
+
+                <form id="loginForm" class="space-y-5">
+
                     <div>
                         <label for="email" class="block text-sm font-bold text-slate-700 mb-2">Email</label>
-                        <input type="email" id="email" placeholder="nama@email.com" required
-                            class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition font-medium text-slate-800 placeholder-slate-400">
+                        <input type="email" id="email" placeholder="nama@email.com" required class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition font-medium text-slate-800 placeholder-slate-400">
                     </div>
 
                     <div>
@@ -60,16 +61,10 @@
                             <label for="password" class="block text-sm font-bold text-slate-700">Password</label>
                             <a href="#" class="text-xs font-bold text-orange-500 hover:text-orange-600 transition">Lupa Password?</a>
                         </div>
-                        <input type="password" id="password" placeholder="••••••••" required
-                            class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition font-medium text-slate-800 placeholder-slate-400">
+                        <input type="password" id="password" placeholder="••••••••" required class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition font-medium text-slate-800 placeholder-slate-400">
                     </div>
 
-                    <div class="flex items-center">
-                        <input type="checkbox" id="remember" class="w-4 h-4 rounded border-slate-300 text-orange-500 focus:ring-orange-500 cursor-pointer">
-                        <label for="remember" class="ml-2 text-sm text-slate-600 font-medium cursor-pointer">Ingat saya</label>
-                    </div>
-
-                    <button type="submit" class="w-full bg-slate-900 hover:bg-orange-500 text-white font-bold py-4 rounded-xl transition duration-300 shadow-lg shadow-slate-200 hover:shadow-orange-200 mt-2">
+                    <button type="submit" id="btnLogin" class="w-full bg-slate-900 hover:bg-orange-500 text-white font-bold py-4 rounded-xl transition duration-300 shadow-lg shadow-slate-200 hover:shadow-orange-200 mt-2">
                         Masuk Sekarang
                     </button>
 
@@ -94,7 +89,7 @@
                 </div>
 
                 <p class="text-center mt-8 text-sm text-slate-500 font-medium">
-                    Belum punya akun? 
+                    Belum punya akun?
                     <a href="register.html" class="text-orange-500 hover:text-orange-600 font-bold transition">Daftar di sini</a>
                 </p>
 
@@ -102,5 +97,101 @@
         </div>
     </div>
 
+    <script>
+        const API_BASE = 'http://localhost:3000';
+
+        // Kalau sudah login, langsung redirect
+        // Auto-redirect HANYA kalau adminToken valid → langsung ke dashboard admin
+        // Kalau cuma userToken pelanggan, JANGAN auto-redirect supaya admin bisa login
+        const adminToken = localStorage.getItem('adminToken');
+        const adminUser = JSON.parse(localStorage.getItem('adminUser') || 'null');
+        if (adminToken && adminUser && adminUser.role === 'admin') {
+            window.location.href = 'dashboard_admin.html';
+        }
+
+        // Pelanggan yang sudah login TIDAK di-redirect otomatis dari sini
+        // supaya tidak loop dengan index.html → login.html → index.html
+
+        // Cek apakah datang dari halaman admin (?next=admin)
+        const nextParam = new URLSearchParams(window.location.search).get('next');
+        if (nextParam === 'admin') {
+            // Kasih hint visual bahwa ini login admin
+            document.querySelector('p.text-slate-500').innerHTML =
+                'Login sebagai <span class="text-orange-500 font-bold">Admin</span> untuk mengakses dashboard pengelola.';
+        }
+
+        // Tampilkan pesan sukses dari register (kalau ada)
+        const regMsg = sessionStorage.getItem('registerSuccess');
+        if (regMsg) {
+            document.getElementById('successBanner').textContent = regMsg;
+            document.getElementById('successBanner').classList.remove('hidden');
+            sessionStorage.removeItem('registerSuccess');
+        }
+
+        // ── Submit login ──────────────────────────────────────────────
+        document.getElementById('loginForm').addEventListener('submit', async(e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('btnLogin');
+            const errEl = document.getElementById('errorBanner');
+
+            errEl.classList.add('hidden');
+            btn.disabled = true;
+            btn.textContent = 'Memproses...';
+
+            try {
+                const res = await fetch(`${API_BASE}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password
+                    })
+                });
+                const json = await res.json();
+
+                if (!json.success) throw new Error(json.message);
+
+                const {
+                    token,
+                    user
+                } = json;
+
+                // Simpan token & data user ke localStorage
+                if (user.role === 'admin') {
+                    localStorage.setItem('adminToken', token);
+                    localStorage.setItem('adminUser', JSON.stringify(user));
+                } else {
+                    localStorage.setItem('userToken', token);
+                    localStorage.setItem('userSession', JSON.stringify(user));
+                }
+
+                redirectByRole(user.role);
+
+            } catch (err) {
+                errEl.textContent = '⚠️ ' + err.message;
+                errEl.classList.remove('hidden');
+                btn.disabled = false;
+                btn.textContent = 'Masuk Sekarang';
+            }
+        });
+
+        // ── Redirect berdasarkan role ─────────────────────────────────
+        function redirectByRole(role) {
+            if (role === 'admin') {
+                window.location.href = 'dashboard_admin.html';
+            } else if (role === 'kreator') {
+                window.location.href = 'seller/dashboard.html';
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+
 </body>
+
 </html>

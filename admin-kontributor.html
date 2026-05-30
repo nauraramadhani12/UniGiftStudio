@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Kontributor | Uni Gift Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 text-slate-900 flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-[#161d31] text-slate-300 flex flex-col justify-between shrink-0">
+        <div>
+            <div class="h-20 flex items-center px-6 gap-3 border-b border-white/5">
+                <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-lg">U</div>
+                <h1 class="text-xl font-bold text-white">Uni Gift <span class="text-orange-500">Admin</span></h1>
+            </div>
+            <div class="p-4">
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 px-2">Menu Utama</p>
+                <nav class="space-y-1">
+                    <a href="dashboard_admin.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold"><span class="text-xl">📊</span> Dashboard</a>
+                    <a href="admin-pesanan.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold"><span class="text-xl">📦</span> Pesanan</a>
+                    <a href="admin-custom-ai.html" class="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold">
+                        <div class="flex items-center gap-3"><span class="text-xl">✨</span> Custom AI</div>
+                        <span class="bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">...</span>
+                    </a>
+                    <a href="admin-katalog.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold"><span class="text-xl">🛍️</span> Katalog Produk</a>
+                    <a href="admin-pengguna.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold"><span class="text-xl">👥</span> Manajemen Pengguna</a>
+                    <a href="admin-kontributor.html" class="flex items-center justify-between px-4 py-3 rounded-xl bg-orange-500 text-white font-semibold shadow-lg shadow-orange-500/20">
+                        <div class="flex items-center gap-3"><span class="text-xl">🤝</span> Kontributor</div>
+                        <span id="badge-pending-nav" class="bg-white text-orange-500 text-[10px] font-bold px-2 py-0.5 rounded-full hidden">0</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+        <div class="p-4 border-t border-white/5">
+            <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold text-slate-400 hover:text-red-400 text-left">Keluar</button>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0">
+            <h2 class="text-xl font-bold text-slate-800">Manajemen Kontributor</h2>
+            <div class="flex items-center gap-4">
+                <button class="text-slate-400 hover:text-orange-500 transition relative">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                </button>
+                <div id="avatar-admin" class="w-10 h-10 bg-orange-100 text-orange-600 font-bold rounded-full flex items-center justify-center border border-orange-200">AU</div>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-8">
+
+            <!-- STAT CARDS -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white p-5 rounded-2xl border border-yellow-200 shadow-sm text-center">
+                    <p class="text-xs font-bold text-yellow-600 uppercase mb-1">Menunggu Review</p>
+                    <p id="stat-pending" class="text-3xl font-extrabold text-slate-900">—</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-green-200 shadow-sm text-center">
+                    <p class="text-xs font-bold text-green-600 uppercase mb-1">Disetujui</p>
+                    <p id="stat-approved" class="text-3xl font-extrabold text-slate-900">—</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-red-200 shadow-sm text-center">
+                    <p class="text-xs font-bold text-red-500 uppercase mb-1">Ditolak</p>
+                    <p id="stat-rejected" class="text-3xl font-extrabold text-slate-900">—</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm text-center">
+                    <p class="text-xs font-bold text-slate-400 uppercase mb-1">Total Masuk</p>
+                    <p id="stat-total" class="text-3xl font-extrabold text-slate-900">—</p>
+                </div>
+            </div>
+
+            <!-- FILTER + SEARCH -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between gap-4">
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="setFilter('all', this)" class="filter-btn bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-bold shadow transition">
+                            Semua <span id="count-all" class="ml-1 opacity-70"></span>
+                        </button>
+                        <button onclick="setFilter('pending', this)" class="filter-btn bg-white border border-slate-200 text-slate-600 hover:text-orange-500 px-4 py-2 rounded-lg text-sm font-bold transition">
+                            Menunggu Review <span id="count-pending" class="ml-1 opacity-70 text-yellow-600"></span>
+                        </button>
+                        <button onclick="setFilter('approved', this)" class="filter-btn bg-white border border-slate-200 text-slate-600 hover:text-orange-500 px-4 py-2 rounded-lg text-sm font-bold transition">
+                            Disetujui <span id="count-approved" class="ml-1 opacity-70 text-green-600"></span>
+                        </button>
+                        <button onclick="setFilter('rejected', this)" class="filter-btn bg-white border border-slate-200 text-slate-600 hover:text-orange-500 px-4 py-2 rounded-lg text-sm font-bold transition">
+                            Ditolak
+                        </button>
+                    </div>
+                    <input type="text" id="searchInput" oninput="renderTable()" placeholder="Cari organisasi, PIC, email..." class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 w-full sm:w-72">
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-400 text-xs uppercase tracking-widest border-b border-slate-200">
+                                <th class="p-5 font-bold">Organisasi</th>
+                                <th class="p-5 font-bold">Tipe</th>
+                                <th class="p-5 font-bold">PIC / Kontak</th>
+                                <th class="p-5 font-bold">Tier</th>
+                                <th class="p-5 font-bold">Tanggal Daftar</th>
+                                <th class="p-5 font-bold">Status</th>
+                                <th class="p-5 font-bold text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="kontributorTbody" class="text-sm text-slate-700 divide-y divide-slate-100">
+                            <tr><td colspan="7" class="p-8 text-center text-slate-400">Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="p-5 border-t border-slate-100 text-center text-xs text-slate-400 font-semibold" id="tableFooter"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL DETAIL & APPROVE/REJECT -->
+    <div id="modal-detail" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-white w-full max-w-xl rounded-3xl shadow-2xl p-8 transform scale-95 transition-all max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-extrabold text-slate-900" id="modal-org-name">Nama Organisasi</h3>
+                <button onclick="closeModal()" class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-red-500 font-bold transition text-lg">✕</button>
+            </div>
+
+            <!-- Info kontributor -->
+            <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 mb-6 space-y-3 text-sm">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tipe Organisasi</p>
+                        <p id="m-tipe" class="font-bold text-slate-800">—</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tier Diminta</p>
+                        <p id="m-tier" class="font-bold text-slate-800">—</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Nama PIC</p>
+                        <p id="m-pic" class="font-bold text-slate-800">—</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Email</p>
+                        <p id="m-email" class="font-bold text-slate-800 break-all">—</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">WhatsApp</p>
+                        <p id="m-wa" class="font-bold text-slate-800">—</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tanggal Daftar</p>
+                        <p id="m-tanggal" class="font-bold text-slate-800">—</p>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Pesan / Proposal</p>
+                    <p id="m-pesan" class="text-slate-600 font-medium italic text-sm leading-relaxed">—</p>
+                </div>
+            </div>
+
+            <!-- Admin action -->
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Set Tier (saat approve)</label>
+                    <select id="modal-tier" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-bold">
+                        <option value="Bronze">🥉 Bronze</option>
+                        <option value="Silver" selected>🥈 Silver</option>
+                        <option value="Gold">🥇 Gold</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Catatan Admin (opsional)</label>
+                    <textarea id="modal-catatan" rows="2" placeholder="Misal: Perlu kirim dokumen tambahan, atau alasan penolakan..." class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium resize-none"></textarea>
+                </div>
+            </div>
+
+            <p id="modal-msg" class="hidden text-sm font-bold text-center my-4"></p>
+
+            <div class="mt-6 flex gap-3">
+                <button onclick="updateStatus('rejected')" class="flex-1 py-3 bg-red-50 text-red-600 rounded-xl font-bold hover:bg-red-100 transition border border-red-200">❌ Tolak</button>
+                <button onclick="updateStatus('approved')" class="flex-1 py-3 bg-green-500 text-white rounded-xl font-bold hover:bg-green-600 transition shadow-lg shadow-green-200">✅ Setujui</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000';
+
+        const token = localStorage.getItem('adminToken');
+        if (!token) window.location.href = 'login.html?next=admin';
+
+        function authHeader() {
+            return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` };
+        }
+
+        function logout() {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            window.location.href = 'login.html?next=admin';
+        }
+
+        const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
+        if (adminUser.nama_lengkap) {
+            const initials = adminUser.nama_lengkap.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+            document.getElementById('avatar-admin').textContent = initials;
+        }
+
+        const STATUS_BADGE = {
+            'pending':  { label: 'Menunggu Review', cls: 'bg-yellow-100 text-yellow-700' },
+            'approved': { label: 'Disetujui',        cls: 'bg-green-100 text-green-600' },
+            'rejected': { label: 'Ditolak',           cls: 'bg-red-100 text-red-600' },
+        };
+
+        const TIER_BADGE = {
+            'Bronze': 'text-orange-600',
+            'Silver': 'text-slate-600',
+            'Gold':   'text-yellow-600',
+        };
+
+        const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+        function fmtDate(iso) {
+            if (!iso) return '—';
+            const d = new Date(iso);
+            return `${String(d.getDate()).padStart(2,'0')} ${months[d.getMonth()]} ${d.getFullYear()}`;
+        }
+
+        let allData = [];
+        let activeFilter = 'all';
+        let activeId = null;
+
+        async function loadData() {
+            try {
+                const res  = await fetch(`${API_BASE}/api/admin/contributors`, { headers: authHeader() });
+                if (res.status === 401 || res.status === 403) { logout(); return; }
+                const json = await res.json();
+                if (!json.success) throw new Error(json.message);
+                allData = json.data;
+                updateStats();
+                renderTable();
+            } catch (err) {
+                document.getElementById('kontributorTbody').innerHTML =
+                    `<tr><td colspan="7" class="p-8 text-center text-red-500">Gagal memuat: ${err.message}</td></tr>`;
+            }
+        }
+
+        function updateStats() {
+            const pending  = allData.filter(d => d.status === 'pending').length;
+            const approved = allData.filter(d => d.status === 'approved').length;
+            const rejected = allData.filter(d => d.status === 'rejected').length;
+
+            document.getElementById('stat-pending').textContent  = pending;
+            document.getElementById('stat-approved').textContent = approved;
+            document.getElementById('stat-rejected').textContent = rejected;
+            document.getElementById('stat-total').textContent    = allData.length;
+
+            document.getElementById('count-all').textContent     = `(${allData.length})`;
+            document.getElementById('count-pending').textContent  = pending  ? `(${pending})`  : '';
+            document.getElementById('count-approved').textContent = approved ? `(${approved})` : '';
+
+            // Badge di nav
+            const badgeNav = document.getElementById('badge-pending-nav');
+            if (pending > 0) {
+                badgeNav.textContent = pending;
+                badgeNav.classList.remove('hidden');
+            } else {
+                badgeNav.classList.add('hidden');
+            }
+        }
+
+        function setFilter(status, btn) {
+            activeFilter = status;
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.className = 'filter-btn bg-white border border-slate-200 text-slate-600 hover:text-orange-500 px-4 py-2 rounded-lg text-sm font-bold transition';
+            });
+            btn.className = 'filter-btn bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-bold shadow transition';
+            renderTable();
+        }
+
+        function renderTable() {
+            const search   = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            const filtered = allData.filter(d => {
+                const ms = activeFilter === 'all' || d.status === activeFilter;
+                const mq = !search
+                    || (d.nama_organisasi || '').toLowerCase().includes(search)
+                    || (d.nama_pic || '').toLowerCase().includes(search)
+                    || (d.email || '').toLowerCase().includes(search);
+                return ms && mq;
+            });
+
+            const tbody = document.getElementById('kontributorTbody');
+            if (!filtered.length) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-400">Tidak ada data.</td></tr>`;
+                document.getElementById('tableFooter').textContent = '';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(d => {
+                const badge = STATUS_BADGE[d.status] || { label: d.status, cls: 'bg-slate-100 text-slate-500' };
+                const tierColor = TIER_BADGE[d.tier] || 'text-slate-500';
+                const tierIcon  = d.tier === 'Bronze' ? '🥉' : d.tier === 'Gold' ? '🥇' : '🥈';
+                return `
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="p-5">
+                        <div class="font-bold text-slate-900">${d.nama_organisasi}</div>
+                    </td>
+                    <td class="p-5 text-slate-500 text-xs">${d.tipe_organisasi || '—'}</td>
+                    <td class="p-5">
+                        <div class="font-bold text-slate-800 text-sm">${d.nama_pic || '—'}</div>
+                        <div class="text-[10px] text-slate-400">${d.email || ''}</div>
+                        <div class="text-[10px] text-slate-400">${d.nomor_wa ? '📱 ' + d.nomor_wa : ''}</div>
+                    </td>
+                    <td class="p-5">
+                        <span class="font-bold text-sm ${tierColor}">${tierIcon} ${d.tier || 'Silver'}</span>
+                    </td>
+                    <td class="p-5 text-slate-500 text-xs whitespace-nowrap">${fmtDate(d.created_at)}</td>
+                    <td class="p-5">
+                        <span class="${badge.cls} px-3 py-1 rounded-full text-xs font-bold">${badge.label}</span>
+                    </td>
+                    <td class="p-5 text-right">
+                        <button onclick="openDetail(${d.id})" class="text-orange-500 hover:text-orange-600 font-bold text-sm">
+                            ${d.status === 'pending' ? 'Review' : 'Lihat'}
+                        </button>
+                    </td>
+                </tr>`;
+            }).join('');
+
+            document.getElementById('tableFooter').textContent =
+                `Menampilkan ${filtered.length} dari ${allData.length} pendaftar`;
+        }
+
+        // ── Modal ─────────────────────────────────────────────────────
+        function openDetail(id) {
+            const d = allData.find(x => x.id === id);
+            if (!d) return;
+            activeId = id;
+
+            document.getElementById('modal-org-name').textContent  = d.nama_organisasi;
+            document.getElementById('m-tipe').textContent          = d.tipe_organisasi || '—';
+            document.getElementById('m-tier').textContent          = d.tier || '—';
+            document.getElementById('m-pic').textContent           = d.nama_pic || '—';
+            document.getElementById('m-email').textContent         = d.email || '—';
+            document.getElementById('m-wa').textContent            = d.nomor_wa || '—';
+            document.getElementById('m-tanggal').textContent       = fmtDate(d.created_at);
+            document.getElementById('m-pesan').textContent         = d.pesan || '(Tidak ada pesan)';
+            document.getElementById('modal-tier').value            = d.tier || 'Silver';
+            document.getElementById('modal-catatan').value         = d.catatan_admin || '';
+            document.getElementById('modal-msg').classList.add('hidden');
+
+            const m = document.getElementById('modal-detail');
+            m.classList.remove('opacity-0', 'pointer-events-none');
+            m.querySelector('div').classList.remove('scale-95');
+        }
+
+        function closeModal() {
+            const m = document.getElementById('modal-detail');
+            m.classList.add('opacity-0', 'pointer-events-none');
+            m.querySelector('div').classList.add('scale-95');
+        }
+
+        async function updateStatus(status) {
+            if (!activeId) return;
+
+            const tier     = document.getElementById('modal-tier').value;
+            const catatan  = document.getElementById('modal-catatan').value.trim();
+            const msgEl    = document.getElementById('modal-msg');
+
+            try {
+                msgEl.textContent = 'Menyimpan...';
+                msgEl.className   = 'text-sm font-bold text-center my-4 text-slate-400';
+                msgEl.classList.remove('hidden');
+
+                const res  = await fetch(`${API_BASE}/api/admin/contributors/${activeId}/status`, {
+                    method:  'PATCH',
+                    headers: authHeader(),
+                    body:    JSON.stringify({ status, tier, catatan_admin: catatan }),
+                });
+                const json = await res.json();
+                if (!json.success) throw new Error(json.message);
+
+                msgEl.textContent = status === 'approved'
+                    ? '✅ Kontributor berhasil disetujui!'
+                    : '❌ Kontributor berhasil ditolak.';
+                msgEl.className = `text-sm font-bold text-center my-4 ${status === 'approved' ? 'text-green-600' : 'text-red-500'}`;
+
+                await loadData();
+                setTimeout(() => closeModal(), 1200);
+
+            } catch (err) {
+                msgEl.textContent = 'Gagal: ' + err.message;
+                msgEl.className   = 'text-sm font-bold text-center my-4 text-red-500';
+            }
+        }
+
+        window.onload = loadData;
+    </script>
+</body>
+</html>

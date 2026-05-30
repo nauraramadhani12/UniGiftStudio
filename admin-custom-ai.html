@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom AI Requests | Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-900 flex h-screen overflow-hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-[#161d31] text-slate-300 flex-shrink-0 hidden md:flex flex-col shadow-2xl z-20 justify-between">
+        <div>
+            <div class="h-20 flex items-center px-6 border-b border-white/5 gap-3">
+                <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-orange-500/30 text-lg">U</div>
+                <h1 class="text-xl font-bold text-white">Uni Gift <span class="text-orange-500">Admin</span></h1>
+            </div>
+            <div class="p-4 space-y-1">
+                <p class="px-2 text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Menu Utama</p>
+                <a href="dashboard_admin.html" class="flex items-center gap-3 text-slate-300 hover:text-white hover:bg-white/5 px-4 py-3 rounded-xl font-semibold transition">
+                    <span class="text-xl">📊</span> Dashboard
+                </a>
+                <a href="admin-pesanan.html" class="flex items-center gap-3 text-slate-300 hover:text-white hover:bg-white/5 px-4 py-3 rounded-xl font-semibold transition">
+                    <span class="text-xl">📦</span> Pesanan
+                </a>
+                <a href="admin-custom-ai.html" class="flex items-center gap-3 bg-orange-500 text-white px-4 py-3 rounded-xl font-semibold shadow-lg shadow-orange-500/20">
+                    <span class="text-xl">✨</span> Custom AI
+                </a>
+                <a href="admin-katalog.html" class="flex items-center gap-3 text-slate-300 hover:text-white hover:bg-white/5 px-4 py-3 rounded-xl font-semibold transition">
+                    <span class="text-xl">🛍️</span> Katalog Produk
+                </a>
+                <a href="admin-pengguna.html" class="flex items-center gap-3 text-slate-300 hover:text-white hover:bg-white/5 px-4 py-3 rounded-xl font-semibold transition">
+                    <span class="text-xl">👥</span> Manajemen Pengguna
+                </a>
+                <a href="admin-kontributor.html" class="flex items-center justify-between text-slate-300 hover:text-white hover:bg-white/5 px-4 py-3 rounded-xl font-semibold transition">
+                    <div class="flex items-center gap-3"><span class="text-xl">🤝</span> Kontributor</div>
+                    <span id="badge-kontributor" class="hidden bg-yellow-400 text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+                </a>
+            </div>
+        </div>
+        <div class="p-4 border-t border-white/5">
+            <button onclick="logout()" class="w-full flex items-center gap-3 text-slate-400 hover:text-red-400 hover:bg-white/5 px-4 py-3 rounded-xl font-semibold transition text-left">
+                Keluar
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden">
+
+        <!-- HEADER -->
+        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 z-10 shrink-0">
+            <div>
+                <h2 class="text-xl font-bold text-slate-800">Custom AI Requests</h2>
+                <p class="text-xs text-slate-400 font-medium">Kelola permintaan desain AI & submission kreator</p>
+            </div>
+            <div id="avatar-admin" class="w-10 h-10 bg-orange-100 text-orange-600 font-bold rounded-full flex items-center justify-center border border-orange-200">AU</div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-6 lg:p-8 bg-slate-50/50">
+
+            <!-- STAT CARDS -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <p class="text-xs font-bold text-slate-400 mb-1">Total Request</p>
+                    <p id="stat-total" class="text-3xl font-extrabold text-slate-900">—</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-yellow-200 shadow-sm">
+                    <p class="text-xs font-bold text-yellow-500 mb-1">Menunggu Review</p>
+                    <p id="stat-pending" class="text-3xl font-extrabold text-yellow-500">—</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-green-200 shadow-sm">
+                    <p class="text-xs font-bold text-green-500 mb-1">Disetujui</p>
+                    <p id="stat-approved" class="text-3xl font-extrabold text-green-500">—</p>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-red-200 shadow-sm">
+                    <p class="text-xs font-bold text-red-400 mb-1">Ditolak</p>
+                    <p id="stat-rejected" class="text-3xl font-extrabold text-red-400">—</p>
+                </div>
+            </div>
+
+            <!-- TABS -->
+            <div class="flex gap-2 mb-6">
+                <button id="tab-ai-btn" onclick="switchTab('ai')" class="px-5 py-2 rounded-xl font-bold text-sm bg-slate-900 text-white shadow-sm transition">🤖 AI Studio Requests</button>
+                <button id="tab-sub-btn" onclick="switchTab('sub')" class="px-5 py-2 rounded-xl font-bold text-sm bg-white text-slate-500 border border-slate-200 hover:bg-slate-50 transition">🎨 Design Submissions</button>
+            </div>
+
+            <!-- FILTER & SEARCH -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm mb-4 px-5 py-4 flex flex-wrap gap-3 items-center justify-between">
+                <div class="flex gap-2 flex-wrap" id="filterBtns">
+                    <button onclick="setFilter('semua')" class="filter-btn active text-xs font-bold px-4 py-1.5 rounded-full bg-slate-900 text-white transition">Semua</button>
+                    <button onclick="setFilter('pending')" class="filter-btn text-xs font-bold px-4 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 hover:border-yellow-400 transition">⏳ Pending</button>
+                    <button onclick="setFilter('disetujui')" class="filter-btn text-xs font-bold px-4 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 hover:border-green-400 transition">✅ Disetujui</button>
+                    <button onclick="setFilter('ditolak')" class="filter-btn text-xs font-bold px-4 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 hover:border-red-400 transition">❌ Ditolak</button>
+                </div>
+                <input id="searchInput" type="text" placeholder="Cari prompt atau nama user..." oninput="renderTable()" class="px-4 py-2 text-sm border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-orange-500 w-64">
+            </div>
+
+            <!-- TABLE: AI REQUESTS -->
+            <div id="panel-ai" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <table class="w-full text-sm">
+                    <thead class="bg-slate-50 border-b border-slate-200">
+                        <tr>
+                            <th class="text-left px-6 py-4 font-bold text-slate-500 text-xs uppercase tracking-wider">Prompt / Deskripsi</th>
+                            <th class="text-left px-4 py-4 font-bold text-slate-500 text-xs uppercase tracking-wider">Style & Material</th>
+                            <th class="text-left px-4 py-4 font-bold text-slate-500 text-xs uppercase tracking-wider">User</th>
+                            <th class="text-left px-4 py-4 font-bold text-slate-500 text-xs uppercase tracking-wider">Tanggal</th>
+                            <th class="text-left px-4 py-4 font-bold text-slate-500 text-xs uppercase tracking-wider">Status</th>
+                            <th class="text-left px-4 py-4 font-bold text-slate-500 text-xs uppercase tracking-wider">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="aiTableBody">
+                        <tr><td colspan="6" class="text-center py-12 text-slate-400 font-medium">Memuat data...</td></tr>
+                    </tbody>
+                </table>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-100 text-xs text-slate-400 font-semibold" id="ai-footer">—</div>
+            </div>
+
+            <!-- TABLE: DESIGN SUBMISSIONS -->
+            <div id="panel-sub" class="hidden bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <table class="w-full text-sm">
+                    <thead class="bg-slate-50 border-b border-slate-200">
+                        <tr>
+                            <th class="text-left px-6 py-4 font-bold text-slate-500 text-xs uppercase tracking-wider">Nama Desain & Info</th>
+                            <th class="text-left px-4 py-4 font-bold text-slate-500 text-xs uppercase tracking-wider">Kategori</th>
+                            <th class="text-left px-4 py-4 font-bold text-slate-500 text-xs uppercase tracking-wider">Kontak</th>
+                            <th class="text-left px-4 py-4 font-bold text-slate-500 text-xs uppercase tracking-wider">Tanggal</th>
+                            <th class="text-left px-4 py-4 font-bold text-slate-500 text-xs uppercase tracking-wider">Status</th>
+                            <th class="text-left px-4 py-4 font-bold text-slate-500 text-xs uppercase tracking-wider">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="subTableBody">
+                        <tr><td colspan="6" class="text-center py-12 text-slate-400 font-medium">Memuat data...</td></tr>
+                    </tbody>
+                </table>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-100 text-xs text-slate-400 font-semibold" id="sub-footer">—</div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MODAL DETAIL -->
+    <div id="detailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg">
+            <div class="flex items-center justify-between p-6 border-b border-slate-100">
+                <h3 class="text-lg font-black text-slate-800">Detail Request</h3>
+                <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-500 transition font-bold">✕</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Prompt / Deskripsi</p>
+                    <p id="modal-prompt" class="text-sm font-medium text-slate-700 bg-slate-50 p-3 rounded-xl leading-relaxed"></p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Visual Style</p>
+                        <p id="modal-style" class="text-sm font-semibold text-slate-700">—</p>
+                    </div>
+                    <div>
+                        <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Material</p>
+                        <p id="modal-material" class="text-sm font-semibold text-slate-700">—</p>
+                    </div>
+                    <div>
+                        <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">User</p>
+                        <p id="modal-user" class="text-sm font-semibold text-slate-700">—</p>
+                    </div>
+                    <div>
+                        <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Tanggal</p>
+                        <p id="modal-date" class="text-sm font-semibold text-slate-700">—</p>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Status Sekarang</p>
+                    <p id="modal-status" class="text-sm font-semibold">—</p>
+                </div>
+            </div>
+            <div class="p-6 pt-0 flex gap-3" id="modal-actions">
+                <button onclick="updateStatus('disetujui')" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold text-sm transition">✅ Setujui</button>
+                <button onclick="updateStatus('ditolak')" class="flex-1 bg-red-100 hover:bg-red-200 text-red-600 py-3 rounded-xl font-bold text-sm transition">❌ Tolak</button>
+                <button onclick="updateStatus('pending')" class="px-4 bg-slate-100 hover:bg-slate-200 text-slate-600 py-3 rounded-xl font-bold text-sm transition">↩ Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000';
+        const token = localStorage.getItem('adminToken');
+        if (!token) window.location.href = 'login.html?next=admin';
+
+        const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
+        const initials = (adminUser.nama || 'AU').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+        document.getElementById('avatar-admin').textContent = initials;
+
+        function authHeader() { return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }; }
+        function logout() {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            window.location.href = 'login.html?next=admin';
+        }
+
+        let allAI   = [];
+        let allSub  = [];
+        let currentFilter = 'semua';
+        let currentTab    = 'ai';
+        let modalId       = null;
+
+        // ── Load data ─────────────────────────────────────────────────
+        async function loadAll() {
+            try {
+                const [r1, r2] = await Promise.all([
+                    fetch(`${API_BASE}/api/admin/ai-requests`,        { headers: authHeader() }),
+                    fetch(`${API_BASE}/api/admin/design-submissions`,  { headers: authHeader() }),
+                ]);
+                const d1 = await r1.json();
+                const d2 = await r2.json();
+                allAI  = d1.success ? d1.data : [];
+                allSub = d2.success ? d2.data : [];
+                updateStats();
+                renderTable();
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function updateStats() {
+            const all = [...allAI, ...allSub];
+            document.getElementById('stat-total').textContent    = all.length;
+            document.getElementById('stat-pending').textContent  = all.filter(x => x.status_approval === 'pending').length;
+            document.getElementById('stat-approved').textContent = all.filter(x => x.status_approval === 'disetujui').length;
+            document.getElementById('stat-rejected').textContent = all.filter(x => x.status_approval === 'ditolak').length;
+        }
+
+        // ── Tab switch ────────────────────────────────────────────────
+        function switchTab(tab) {
+            currentTab = tab;
+            currentFilter = 'semua';
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('bg-slate-900', 'text-white');
+                b.classList.add('bg-white', 'border', 'border-slate-200', 'text-slate-600');
+            });
+            document.querySelector('.filter-btn').classList.add('bg-slate-900', 'text-white');
+
+            document.getElementById('tab-ai-btn').className  = tab === 'ai'
+                ? 'px-5 py-2 rounded-xl font-bold text-sm bg-slate-900 text-white shadow-sm transition'
+                : 'px-5 py-2 rounded-xl font-bold text-sm bg-white text-slate-500 border border-slate-200 hover:bg-slate-50 transition';
+            document.getElementById('tab-sub-btn').className = tab === 'sub'
+                ? 'px-5 py-2 rounded-xl font-bold text-sm bg-slate-900 text-white shadow-sm transition'
+                : 'px-5 py-2 rounded-xl font-bold text-sm bg-white text-slate-500 border border-slate-200 hover:bg-slate-50 transition';
+
+            document.getElementById('panel-ai').classList.toggle('hidden', tab !== 'ai');
+            document.getElementById('panel-sub').classList.toggle('hidden', tab !== 'sub');
+            renderTable();
+        }
+
+        // ── Filter ────────────────────────────────────────────────────
+        function setFilter(f) {
+            currentFilter = f;
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('bg-slate-900', 'text-white');
+                b.classList.add('bg-white', 'text-slate-600');
+            });
+            event.target.classList.add('bg-slate-900', 'text-white');
+            event.target.classList.remove('bg-white', 'text-slate-600');
+            renderTable();
+        }
+
+        // ── Render ────────────────────────────────────────────────────
+        function statusBadge(s) {
+            if (s === 'pending')   return '<span class="px-2 py-1 rounded-full text-[10px] font-black bg-yellow-100 text-yellow-700">⏳ Pending</span>';
+            if (s === 'disetujui') return '<span class="px-2 py-1 rounded-full text-[10px] font-black bg-green-100 text-green-700">✅ Disetujui</span>';
+            if (s === 'ditolak')   return '<span class="px-2 py-1 rounded-full text-[10px] font-black bg-red-100 text-red-600">❌ Ditolak</span>';
+            return `<span class="px-2 py-1 rounded-full text-[10px] font-black bg-slate-100 text-slate-500">${s}</span>`;
+        }
+
+        function fmtDate(d) {
+            return new Date(d).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        function renderTable() {
+            const q = (document.getElementById('searchInput').value || '').toLowerCase();
+            if (currentTab === 'ai') {
+                let rows = allAI;
+                if (currentFilter !== 'semua') rows = rows.filter(r => r.status_approval === currentFilter);
+                if (q) rows = rows.filter(r => (r.prompt_text||'').toLowerCase().includes(q) || (r.nama_user||'').toLowerCase().includes(q));
+                const tbody = document.getElementById('aiTableBody');
+                if (rows.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-12 text-slate-400 font-medium">Tidak ada data.</td></tr>`;
+                } else {
+                    tbody.innerHTML = rows.map(r => `
+                        <tr class="border-b border-slate-100 hover:bg-orange-50/30 transition">
+                            <td class="px-6 py-4 max-w-xs">
+                                <p class="font-semibold text-slate-800 text-sm line-clamp-2 leading-snug">${r.prompt_text || '—'}</p>
+                                ${r.kualitas ? `<span class="text-[10px] text-slate-400 font-semibold">${r.kualitas}</span>` : ''}
+                            </td>
+                            <td class="px-4 py-4">
+                                <p class="text-xs font-bold text-slate-700">${r.visual_style || '—'}</p>
+                                <p class="text-[10px] text-slate-400">${r.material || '—'}</p>
+                            </td>
+                            <td class="px-4 py-4">
+                                <p class="text-xs font-bold text-slate-700">${r.nama_user || '<span class="text-slate-300">Tamu</span>'}</p>
+                                <p class="text-[10px] text-slate-400">${r.email_user || '—'}</p>
+                            </td>
+                            <td class="px-4 py-4 text-xs text-slate-500 font-medium">${fmtDate(r.created_at)}</td>
+                            <td class="px-4 py-4">${statusBadge(r.status_approval)}</td>
+                            <td class="px-4 py-4">
+                                <button onclick="openModal(${r.id},'ai')" class="text-xs font-bold text-orange-500 hover:text-orange-700 transition">Review →</button>
+                            </td>
+                        </tr>`).join('');
+                }
+                document.getElementById('ai-footer').textContent = `Menampilkan ${rows.length} dari ${allAI.length} request`;
+            } else {
+                let rows = allSub;
+                if (currentFilter !== 'semua') rows = rows.filter(r => r.status_approval === currentFilter);
+                if (q) rows = rows.filter(r => (r.prompt_text||'').toLowerCase().includes(q) || (r.kontak||'').toLowerCase().includes(q));
+                const tbody = document.getElementById('subTableBody');
+                if (rows.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-12 text-slate-400 font-medium">Belum ada submission.</td></tr>`;
+                } else {
+                    // Parse info dari prompt_text: "[DESIGN SUBMISSION] Nama: X | Deskripsi: Y | Harga Saran: Z | Kontak: W"
+                    tbody.innerHTML = rows.map(r => {
+                        const text = r.prompt_text || '';
+                        const namaMatch = text.match(/Nama:\s*([^|]+)/);
+                        const descMatch = text.match(/Deskripsi:\s*([^|]+)/);
+                        const hargaMatch = text.match(/Harga Saran:\s*([^|]+)/);
+                        const nama  = namaMatch  ? namaMatch[1].trim()  : '—';
+                        const desc  = descMatch  ? descMatch[1].trim()  : '—';
+                        const harga = hargaMatch ? hargaMatch[1].trim() : '—';
+                        return `
+                        <tr class="border-b border-slate-100 hover:bg-orange-50/30 transition">
+                            <td class="px-6 py-4 max-w-xs">
+                                <p class="font-bold text-slate-800 text-sm">${nama}</p>
+                                <p class="text-[10px] text-slate-400 line-clamp-1 mt-0.5">${desc !== '-' ? desc : ''}</p>
+                                ${harga !== '-' ? `<p class="text-[10px] text-green-600 font-bold mt-0.5">Saran: Rp ${parseInt(harga||0).toLocaleString('id-ID')}</p>` : ''}
+                            </td>
+                            <td class="px-4 py-4">
+                                <span class="px-2 py-1 bg-orange-50 border border-orange-100 text-orange-700 text-[10px] font-bold rounded-full">${r.kategori || '—'}</span>
+                            </td>
+                            <td class="px-4 py-4 text-xs font-medium text-slate-600">${r.kontak || '—'}</td>
+                            <td class="px-4 py-4 text-xs text-slate-500 font-medium">${fmtDate(r.created_at)}</td>
+                            <td class="px-4 py-4">${statusBadge(r.status_approval)}</td>
+                            <td class="px-4 py-4">
+                                <button onclick="openModal(${r.id},'sub')" class="text-xs font-bold text-orange-500 hover:text-orange-700 transition">Review →</button>
+                            </td>
+                        </tr>`;
+                    }).join('');
+                }
+                document.getElementById('sub-footer').textContent = `Menampilkan ${rows.length} dari ${allSub.length} submission`;
+            }
+        }
+
+        // ── Modal ─────────────────────────────────────────────────────
+        function openModal(id, type) {
+            const data = type === 'ai'
+                ? allAI.find(r => r.id === id)
+                : allSub.find(r => r.id === id);
+            if (!data) return;
+            modalId = id;
+
+            let prompt = data.prompt_text || '—';
+            if (type === 'sub') {
+                // Bersihkan prefix [DESIGN SUBMISSION]
+                prompt = prompt.replace('[DESIGN SUBMISSION] ', '').replace(/\|/g, '\n').trim();
+            }
+
+            document.getElementById('modal-prompt').textContent   = prompt;
+            document.getElementById('modal-style').textContent    = type === 'ai' ? (data.visual_style || '—') : (data.kategori || '—');
+            document.getElementById('modal-material').textContent = type === 'ai' ? (data.material || '—') : (data.kontak || '—');
+            document.getElementById('modal-user').textContent     = type === 'ai' ? (data.nama_user || 'Tamu') : 'Kreator Eksternal';
+            document.getElementById('modal-date').textContent     = fmtDate(data.created_at);
+            document.getElementById('modal-status').innerHTML     = statusBadge(data.status_approval);
+
+            document.getElementById('detailModal').classList.remove('hidden');
+            document.getElementById('detailModal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+            document.getElementById('detailModal').classList.remove('flex');
+            modalId = null;
+        }
+
+        async function updateStatus(status) {
+            if (!modalId) return;
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/ai-requests/${modalId}/status`, {
+                    method: 'PATCH',
+                    headers: authHeader(),
+                    body: JSON.stringify({ status }),
+                });
+                const json = await res.json();
+                if (!json.success) throw new Error(json.message);
+
+                // Update lokal
+                const updateList = (list) => list.map(r => r.id === modalId ? { ...r, status_approval: status } : r);
+                allAI  = updateList(allAI);
+                allSub = updateList(allSub);
+                updateStats();
+                renderTable();
+                closeModal();
+            } catch (e) {
+                alert('Gagal update: ' + e.message);
+            }
+        }
+
+        // Klik di luar modal → tutup
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        loadAll();
+    </script>
+
+</body>
+</html>

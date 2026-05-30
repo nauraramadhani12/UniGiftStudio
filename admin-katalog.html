@@ -6,7 +6,10 @@
     <title>Katalog Produk | Uni Gift Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .tab-active { background-color: #0f172a; color: #fff; }
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-900 flex h-screen overflow-hidden">
 
@@ -19,143 +22,393 @@
             <div class="p-4">
                 <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 px-2">Menu Utama</p>
                 <nav class="space-y-1">
-                    <a href="dashboard_admin.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold">
-                        <span class="text-xl">📊</span> Dashboard
-                    </a>
-                    <a href="admin-pesanan.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold">
-                        <span class="text-xl">📦</span> Pesanan
-                    </a>
+                    <a href="dashboard_admin.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold"><span class="text-xl">📊</span> Dashboard</a>
+                    <a href="admin-pesanan.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold"><span class="text-xl">📦</span> Pesanan</a>
                     <a href="admin-custom-ai.html" class="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold">
                         <div class="flex items-center gap-3"><span class="text-xl">✨</span> Custom AI</div>
-                        <span class="bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">3 Baru</span>
+                        <span class="bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">...</span>
                     </a>
-                    <a href="admin-katalog.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-orange-500 text-white font-semibold shadow-lg shadow-orange-500/20">
-                        <span class="text-xl">🛍️</span> Katalog Produk
-                    </a>
-                    <a href="admin-pengguna.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold">
-                        <span class="text-xl">👥</span> Manajemen Pengguna
-                    </a>
+                    <a href="admin-katalog.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-orange-500 text-white font-semibold shadow-lg shadow-orange-500/20"><span class="text-xl">🛍️</span> Katalog Produk</a>
+                    <a href="admin-pengguna.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold"><span class="text-xl">👥</span> Manajemen Pengguna</a>
                 </nav>
             </div>
         </div>
         <div class="p-4 border-t border-white/5">
-            <a href="login.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold text-slate-400 hover:text-red-400">Keluar</a>
+            <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition font-semibold text-slate-400 hover:text-red-400 text-left">Keluar</button>
         </div>
     </aside>
 
     <div class="flex-1 flex flex-col overflow-hidden">
         <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0">
             <h2 class="text-xl font-bold text-slate-800">Katalog Produk</h2>
-            <div class="flex items-center gap-6">
-                <button onclick="alert('Fitur Tambah Produk akan segera tersedia!')" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md transition">+ Tambah Produk</button>
-                <div class="w-10 h-10 bg-orange-100 text-orange-600 font-bold rounded-full flex items-center justify-center border border-orange-200 cursor-pointer">AU</div>
+            <div class="flex items-center gap-4">
+                <button onclick="openModal()" class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md shadow-orange-200 transition">+ Tambah Produk</button>
+                <div id="avatar-admin" class="w-10 h-10 bg-orange-100 text-orange-600 font-bold rounded-full flex items-center justify-center border border-orange-200">AU</div>
             </div>
         </header>
 
         <main class="flex-1 overflow-y-auto p-8">
+
+            <!-- STAT MINI -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
+                    <p class="text-xs font-bold text-slate-400 uppercase mb-1">Total Produk</p>
+                    <p id="stat-total" class="text-2xl font-extrabold text-slate-900">—</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-green-200 shadow-sm text-center">
+                    <p class="text-xs font-bold text-green-500 uppercase mb-1">Aktif</p>
+                    <p id="stat-aktif" class="text-2xl font-extrabold text-slate-900">—</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-red-200 shadow-sm text-center">
+                    <p class="text-xs font-bold text-red-500 uppercase mb-1">Stok Habis</p>
+                    <p id="stat-habis" class="text-2xl font-extrabold text-slate-900">—</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-orange-200 shadow-sm text-center">
+                    <p class="text-xs font-bold text-orange-500 uppercase mb-1">Stok Rendah (&lt;5)</p>
+                    <p id="stat-rendah" class="text-2xl font-extrabold text-slate-900">—</p>
+                </div>
+            </div>
+
+            <!-- FILTER KATEGORI + SEARCH -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="p-6 border-b border-slate-100 flex justify-end">
-                    <input type="text" id="searchInput" onkeyup="searchProduct()" placeholder="Cari nama produk..." class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 w-full sm:w-64">
+                <div class="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between gap-4">
+                    <div class="flex flex-wrap gap-2" id="kategori-tabs">
+                        <button onclick="setKategori('semua', this)" class="tab-btn tab-active px-4 py-2 rounded-lg text-sm font-bold border border-transparent transition">Semua</button>
+                        <button onclick="setKategori('Keychain', this)" class="tab-btn bg-white border border-slate-200 text-slate-600 px-4 py-2 rounded-lg text-sm font-bold transition hover:bg-slate-50">Keychain</button>
+                        <button onclick="setKategori('Socks', this)" class="tab-btn bg-white border border-slate-200 text-slate-600 px-4 py-2 rounded-lg text-sm font-bold transition hover:bg-slate-50">Socks</button>
+                        <button onclick="setKategori('Statue', this)" class="tab-btn bg-white border border-slate-200 text-slate-600 px-4 py-2 rounded-lg text-sm font-bold transition hover:bg-slate-50">Statue</button>
+                        <button onclick="setKategori('Figure', this)" class="tab-btn bg-white border border-slate-200 text-slate-600 px-4 py-2 rounded-lg text-sm font-bold transition hover:bg-slate-50">Figure</button>
+                        <button onclick="setKategori('Custom', this)" class="tab-btn bg-white border border-slate-200 text-slate-600 px-4 py-2 rounded-lg text-sm font-bold transition hover:bg-slate-50">Custom</button>
+                    </div>
+                    <div class="flex gap-3">
+                        <select id="filterStatus" onchange="renderTable()" class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            <option value="">Semua Status</option>
+                            <option value="aktif">Aktif</option>
+                            <option value="habis">Habis</option>
+                            <option value="nonaktif">Nonaktif</option>
+                        </select>
+                        <input type="text" id="searchInput" oninput="renderTable()" placeholder="Cari produk..." class="bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 w-52">
+                    </div>
                 </div>
 
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-slate-50 text-slate-400 text-xs uppercase tracking-widest border-b border-slate-200">
-                            <th class="p-6 font-bold w-16">Item</th>
-                            <th class="p-6 font-bold">Nama Produk</th>
-                            <th class="p-6 font-bold">Kategori</th>
-                            <th class="p-6 font-bold">Harga</th>
-                            <th class="p-6 font-bold">Stok</th>
-                            <th class="p-6 font-bold">Status</th>
-                            <th class="p-6 font-bold text-right">Aksi</th>
+                            <th class="p-5 font-bold w-16">Foto</th>
+                            <th class="p-5 font-bold">Nama Produk</th>
+                            <th class="p-5 font-bold">Kategori</th>
+                            <th class="p-5 font-bold">Harga Jual</th>
+                            <th class="p-5 font-bold">Stok</th>
+                            <th class="p-5 font-bold">Status</th>
+                            <th class="p-5 font-bold text-right">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="text-sm font-semibold text-slate-700 divide-y divide-slate-100">
-                        
-                        <tr class="product-row hover:bg-slate-50 transition">
-                            <td class="p-6"><div class="w-12 h-12 bg-slate-900 rounded-lg flex items-center justify-center text-xl">🏍️</div></td>
-                            <td class="p-6 font-bold text-slate-900 product-name">Night Ride Glow Tag</td>
-                            <td class="p-6">Keychain</td>
-                            <td class="p-6">Rp 45.000</td>
-                            <td class="p-6">120</td>
-                            <td class="p-6"><span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-bold">Aktif</span></td>
-                            <td class="p-6 text-right space-x-3">
-                                <button onclick="window.location.href='admin-edit-produk.html'" class="text-slate-400 hover:text-blue-500 font-bold transition">Edit</button>
-                                <button onclick="deleteProduct(this)" class="text-slate-400 hover:text-red-500 font-bold transition">Hapus</button>
-                            </td>
-                        </tr>
-
-                        <tr class="product-row hover:bg-slate-50 transition">
-                            <td class="p-6"><div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-xl">🧦</div></td>
-                            <td class="p-6 font-bold text-slate-900 product-name">Custom Pattern Socks</td>
-                            <td class="p-6">Socks</td>
-                            <td class="p-6">Rp 85.000</td>
-                            <td class="p-6">55</td>
-                            <td class="p-6"><span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-bold">Aktif</span></td>
-                            <td class="p-6 text-right space-x-3">
-                                <button onclick="window.location.href='admin-edit-produk.html'" class="text-slate-400 hover:text-blue-500 font-bold transition">Edit</button>
-                                <button onclick="deleteProduct(this)" class="text-slate-400 hover:text-red-500 font-bold transition">Hapus</button>
-                            </td>
-                        </tr>
-
-                        <tr class="product-row hover:bg-slate-50 transition opacity-60">
-                            <td class="p-6"><div class="w-12 h-12 bg-slate-200 rounded-lg flex items-center justify-center text-xl">🗿</div></td>
-                            <td class="p-6 font-bold text-slate-900 product-name">Mini Statue Kustom</td>
-                            <td class="p-6">Statue</td>
-                            <td class="p-6">Rp 150.000</td>
-                            <td class="p-6">0</td>
-                            <td class="p-6"><span class="bg-slate-200 text-slate-600 px-3 py-1 rounded-full text-xs font-bold">Habis</span></td>
-                            <td class="p-6 text-right space-x-3">
-                                <button onclick="window.location.href='admin-edit-produk.html'" class="text-slate-400 hover:text-blue-500 font-bold transition">Edit</button>
-                                <button onclick="deleteProduct(this)" class="text-slate-400 hover:text-red-500 font-bold transition">Hapus</button>
-                            </td>
-                        </tr>
-
+                    <tbody id="produkTbody" class="text-sm text-slate-700 divide-y divide-slate-100">
+                        <tr><td colspan="7" class="p-8 text-center text-slate-400">Memuat produk...</td></tr>
                     </tbody>
                 </table>
-                
-                <div id="noResult" class="hidden p-8 text-center text-slate-500 font-bold">
-                    Tidak ada produk yang cocok dengan pencarian.
-                </div>
 
+                <div id="noResult" class="hidden p-8 text-center text-slate-500 font-bold">
+                    Tidak ada produk yang cocok.
+                </div>
+                <div class="p-5 border-t border-slate-100 text-center text-xs text-slate-400 font-semibold" id="tableFooter"></div>
             </div>
         </main>
     </div>
 
+    <!-- MODAL TAMBAH / EDIT PRODUK -->
+    <div id="modal-produk" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl p-8 transform scale-95 transition-all max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="modal-title" class="text-2xl font-extrabold text-slate-900">Tambah Produk</h3>
+                <button onclick="closeModal()" class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:text-red-500 font-bold transition text-lg">✕</button>
+            </div>
+
+            <input type="hidden" id="edit-id">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Nama Produk <span class="text-red-400">*</span></label>
+                    <input id="f-nama" type="text" placeholder="Nama produk" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Kode Produk</label>
+                    <input id="f-kode" type="text" placeholder="Contoh: UGS-KCH-001" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Kategori</label>
+                    <select id="f-kategori" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                        <option value="">-- Pilih Kategori --</option>
+                        <option value="Keychain">Keychain</option>
+                        <option value="Socks">Socks</option>
+                        <option value="Statue">Statue</option>
+                        <option value="Figure">Figure</option>
+                        <option value="Custom">Custom</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Harga Asli (Modal)</label>
+                    <input id="f-harga-asli" type="number" min="0" placeholder="0" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Harga Jual <span class="text-red-400">*</span></label>
+                    <input id="f-harga-jual" type="number" min="0" placeholder="0" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Stok</label>
+                    <input id="f-stok" type="number" min="0" placeholder="0" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Status</label>
+                    <select id="f-status" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                        <option value="aktif">Aktif</option>
+                        <option value="habis">Habis</option>
+                        <option value="nonaktif">Nonaktif</option>
+                    </select>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">URL Foto</label>
+                    <input id="f-foto" type="url" placeholder="https://..." class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Deskripsi</label>
+                    <textarea id="f-deskripsi" rows="3" placeholder="Deskripsi singkat produk..." class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium resize-none"></textarea>
+                </div>
+            </div>
+
+            <p id="modal-err" class="hidden text-sm text-red-500 font-bold mt-4 text-center"></p>
+
+            <div class="mt-6 flex gap-3">
+                <button onclick="closeModal()" class="flex-1 py-3 font-bold text-slate-500 bg-slate-100 rounded-xl hover:bg-slate-200 transition">Batal</button>
+                <button onclick="simpanProduk()" id="btn-simpan" class="flex-1 py-3 bg-orange-500 text-white rounded-xl font-bold shadow-lg shadow-orange-200 hover:bg-orange-600 transition">Simpan</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // 1. Fitur Search Real-time
-        function searchProduct() {
-            let input = document.getElementById("searchInput").value.toLowerCase();
-            let rows = document.querySelectorAll(".product-row");
-            let hasResult = false;
+        const API_BASE = 'http://localhost:3000';
 
-            rows.forEach(row => {
-                let productName = row.querySelector(".product-name").innerText.toLowerCase();
-                if (productName.includes(input)) {
-                    row.style.display = ""; // Tampilkan baris
-                    hasResult = true;
-                } else {
-                    row.style.display = "none"; // Sembunyikan baris
-                }
-            });
+        const token = localStorage.getItem('adminToken');
+        if (!token) window.location.href = 'login.html?next=admin';
 
-            // Tampilkan pesan "Tidak ada produk" jika hasil pencarian kosong
-            document.getElementById("noResult").style.display = hasResult ? "none" : "block";
+        function authHeader() {
+            return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` };
         }
 
-        // 2. Fitur Hapus Produk
-        function deleteProduct(btnElement) {
-            // Tampilkan pop-up konfirmasi
-            let confirmDelete = confirm("Apakah Anda yakin ingin menghapus produk ini dari katalog?");
-            
-            if (confirmDelete) {
-                // Cari elemen 'tr' (baris tabel) terdekat dari tombol yang diklik, lalu hapus
-                let row = btnElement.closest("tr");
-                row.remove();
+        function logout() {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            window.location.href = 'login.html?next=admin';
+        }
+
+        const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
+        if (adminUser.nama_lengkap) {
+            const initials = adminUser.nama_lengkap.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+            document.getElementById('avatar-admin').textContent = initials;
+        }
+
+        const STATUS_BADGE = {
+            'aktif':    { label: 'Aktif',    cls: 'bg-green-100 text-green-600' },
+            'habis':    { label: 'Habis',    cls: 'bg-red-100 text-red-500' },
+            'nonaktif': { label: 'Nonaktif', cls: 'bg-slate-200 text-slate-500' },
+        };
+
+        let allProducts = [];
+        let activeKategori = 'semua';
+        let editMode = false;
+
+        function fmtRp(n) { return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
+
+        async function loadProducts() {
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/products`, { headers: authHeader() });
+                if (res.status === 401 || res.status === 403) { logout(); return; }
+                const json = await res.json();
+                if (!json.success) throw new Error(json.message);
+                allProducts = json.data;
+                updateStats();
+                renderTable();
+            } catch (err) {
+                document.getElementById('produkTbody').innerHTML =
+                    `<tr><td colspan="7" class="p-8 text-center text-red-500">Gagal memuat: ${err.message}</td></tr>`;
             }
         }
-        
-        // Fungsi editProduct() lama sudah dihapus karena diganti dengan link langsung
+
+        function updateStats() {
+            const total   = allProducts.length;
+            const aktif   = allProducts.filter(p => p.status_produk === 'aktif').length;
+            const habis   = allProducts.filter(p => p.status_produk === 'habis' || p.stok === 0).length;
+            const rendah  = allProducts.filter(p => p.stok > 0 && p.stok < 5).length;
+            document.getElementById('stat-total').textContent  = total;
+            document.getElementById('stat-aktif').textContent  = aktif;
+            document.getElementById('stat-habis').textContent  = habis;
+            document.getElementById('stat-rendah').textContent = rendah;
+        }
+
+        function setKategori(kat, btn) {
+            activeKategori = kat;
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.className = 'tab-btn bg-white border border-slate-200 text-slate-600 px-4 py-2 rounded-lg text-sm font-bold transition hover:bg-slate-50';
+            });
+            btn.className = 'tab-btn tab-active px-4 py-2 rounded-lg text-sm font-bold border border-transparent transition';
+            renderTable();
+        }
+
+        function renderTable() {
+            const search    = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            const statusFil = document.getElementById('filterStatus').value;
+
+            const filtered = allProducts.filter(p => {
+                const matchKat    = activeKategori === 'semua' || (p.kategori || '') === activeKategori;
+                const matchStatus = !statusFil || p.status_produk === statusFil;
+                const matchSearch = !search
+                    || (p.nama_produk || '').toLowerCase().includes(search)
+                    || (p.kode_produk || '').toLowerCase().includes(search);
+                return matchKat && matchStatus && matchSearch;
+            });
+
+            const tbody = document.getElementById('produkTbody');
+            document.getElementById('noResult').classList.add('hidden');
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '';
+                document.getElementById('noResult').classList.remove('hidden');
+                document.getElementById('tableFooter').textContent = '';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(p => {
+                const badge = STATUS_BADGE[p.status_produk] || { label: p.status_produk, cls: 'bg-slate-100 text-slate-500' };
+                const stokColor = p.stok === 0 ? 'text-red-600 font-extrabold'
+                    : p.stok < 5 ? 'text-orange-500 font-extrabold'
+                    : 'text-slate-700';
+                const stokIcon = p.stok === 0 ? ' 🚫' : p.stok < 5 ? ' ⚠️' : '';
+                const fotoEl = p.foto_url
+                    ? `<img src="${p.foto_url}" class="w-12 h-12 rounded-lg object-cover border border-slate-100" onerror="this.outerHTML='<div class=\'w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center text-xl\'>🛍️</div>'">`
+                    : `<div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center text-xl">🛍️</div>`;
+                return `
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="p-5">${fotoEl}</td>
+                    <td class="p-5">
+                        <div class="font-bold text-slate-900">${p.nama_produk}</div>
+                        <div class="text-[10px] text-slate-400 font-mono">${p.kode_produk || '—'}</div>
+                    </td>
+                    <td class="p-5 text-slate-500">${p.kategori || '—'}</td>
+                    <td class="p-5 font-bold text-slate-900">${fmtRp(p.harga_jual)}</td>
+                    <td class="p-5 ${stokColor}">${p.stok}${stokIcon}</td>
+                    <td class="p-5">
+                        <span class="${badge.cls} px-3 py-1 rounded-full text-xs font-bold">${badge.label}</span>
+                    </td>
+                    <td class="p-5 text-right space-x-3">
+                        <button onclick="editProduk(${p.id})" class="text-slate-400 hover:text-blue-600 font-bold transition text-sm">Edit</button>
+                        <button onclick="hapusProduk(${p.id}, '${(p.nama_produk || '').replace(/'/g,'')}')" class="text-slate-400 hover:text-red-500 font-bold transition text-sm">Hapus</button>
+                    </td>
+                </tr>`;
+            }).join('');
+
+            document.getElementById('tableFooter').textContent =
+                `Menampilkan ${filtered.length} dari ${allProducts.length} produk`;
+        }
+
+        // ── Modal ─────────────────────────────────────────────────────
+        function openModal(id = null) {
+            editMode = !!id;
+            document.getElementById('modal-title').textContent = id ? 'Edit Produk' : 'Tambah Produk';
+            document.getElementById('modal-err').classList.add('hidden');
+            if (!id) {
+                ['f-nama','f-kode','f-foto','f-deskripsi'].forEach(x => document.getElementById(x).value = '');
+                ['f-harga-asli','f-harga-jual','f-stok'].forEach(x => document.getElementById(x).value = '');
+                document.getElementById('f-kategori').value = '';
+                document.getElementById('f-status').value = 'aktif';
+                document.getElementById('edit-id').value = '';
+            }
+            const m = document.getElementById('modal-produk');
+            m.classList.remove('opacity-0', 'pointer-events-none');
+            m.querySelector('div').classList.remove('scale-95');
+        }
+
+        function closeModal() {
+            const m = document.getElementById('modal-produk');
+            m.classList.add('opacity-0', 'pointer-events-none');
+            m.querySelector('div').classList.add('scale-95');
+        }
+
+        function editProduk(id) {
+            const p = allProducts.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('edit-id').value          = p.id;
+            document.getElementById('f-nama').value           = p.nama_produk || '';
+            document.getElementById('f-kode').value           = p.kode_produk || '';
+            document.getElementById('f-kategori').value       = p.kategori || '';
+            document.getElementById('f-harga-asli').value     = p.harga_asli || '';
+            document.getElementById('f-harga-jual').value     = p.harga_jual || '';
+            document.getElementById('f-stok').value           = p.stok ?? 0;
+            document.getElementById('f-status').value         = p.status_produk || 'aktif';
+            document.getElementById('f-foto').value           = p.foto_url || '';
+            document.getElementById('f-deskripsi').value      = p.deskripsi || '';
+            openModal(id);
+        }
+
+        async function simpanProduk() {
+            const nama     = document.getElementById('f-nama').value.trim();
+            const hargaJual = Number(document.getElementById('f-harga-jual').value);
+            const errEl    = document.getElementById('modal-err');
+            const btnEl    = document.getElementById('btn-simpan');
+
+            if (!nama) { showErr('Nama produk wajib diisi.'); return; }
+            if (!hargaJual) { showErr('Harga jual wajib diisi.'); return; }
+
+            const body = {
+                nama_produk:  nama,
+                kode_produk:  document.getElementById('f-kode').value.trim() || null,
+                kategori:     document.getElementById('f-kategori').value || null,
+                harga_asli:   Number(document.getElementById('f-harga-asli').value) || null,
+                harga_jual:   hargaJual,
+                stok:         Number(document.getElementById('f-stok').value) || 0,
+                status_produk: document.getElementById('f-status').value,
+                foto_url:     document.getElementById('f-foto').value.trim() || null,
+                deskripsi:    document.getElementById('f-deskripsi').value.trim() || null,
+            };
+
+            const editId = document.getElementById('edit-id').value;
+            const url    = editId ? `${API_BASE}/api/admin/products/${editId}` : `${API_BASE}/api/admin/products`;
+            const method = editId ? 'PUT' : 'POST';
+
+            try {
+                btnEl.disabled = true; btnEl.textContent = 'Menyimpan...';
+                errEl.classList.add('hidden');
+                const res  = await fetch(url, { method, headers: authHeader(), body: JSON.stringify(body) });
+                const json = await res.json();
+                if (!json.success) throw new Error(json.message);
+                closeModal();
+                await loadProducts();
+            } catch (err) {
+                showErr(err.message);
+            } finally {
+                btnEl.disabled = false; btnEl.textContent = 'Simpan';
+            }
+        }
+
+        async function hapusProduk(id, nama) {
+            if (!confirm(`Hapus produk "${nama}"? Tindakan ini tidak bisa dibatalkan.`)) return;
+            try {
+                const res  = await fetch(`${API_BASE}/api/admin/products/${id}`, { method: 'DELETE', headers: authHeader() });
+                const json = await res.json();
+                if (!json.success) throw new Error(json.message);
+                await loadProducts();
+            } catch (err) {
+                alert('Gagal menghapus: ' + err.message);
+            }
+        }
+
+        function showErr(msg) {
+            const el = document.getElementById('modal-err');
+            el.textContent = msg;
+            el.classList.remove('hidden');
+        }
+
+        window.onload = loadProducts;
     </script>
 </body>
 </html>

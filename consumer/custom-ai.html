@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uni Gift Studio | AI Design Studio Max</title>
+    <title>Uni Gift Studio | AI Design Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -13,7 +13,6 @@
             overflow-x: hidden;
             background: radial-gradient(circle at top, #fff7ed 0%, #f8fafc 50%);
         }
-        /* Modern Glassmorphism Card */
         
         .glass-card {
             background: rgba(255, 255, 255, 0.6);
@@ -21,7 +20,6 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
         }
-        /* Cinematic Viewport Container */
         
         .viewport-container {
             background: radial-gradient(circle at 50% 50%, #1e293b 0%, #020617 100%);
@@ -30,7 +28,6 @@
             border: 4px solid #0f172a;
             box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.8);
         }
-        /* High-Tech Grid Effect */
         
         .viewport-container::before {
             content: "";
@@ -40,18 +37,6 @@
             background-size: 30px 30px;
             pointer-events: none;
             z-index: 10;
-        }
-        /* Retro Scanline Effect */
-        
-        .viewport-container::after {
-            content: " ";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-            z-index: 25;
-            background-size: 100% 3px, 5px 100%;
-            pointer-events: none;
-            opacity: 0.3;
         }
         
         .btn-generate {
@@ -63,6 +48,12 @@
         .btn-generate:hover {
             box-shadow: 0 20px 35px -5px rgba(234, 88, 12, 0.5);
             transform: translateY(-3px) scale(1.02);
+        }
+        
+        .btn-generate:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
         
         @keyframes pulse-soft {
@@ -80,11 +71,165 @@
         .glow-pulse {
             animation: pulse-soft 4s infinite ease-in-out;
         }
+        
+        .step-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 900;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        
+        .step-dot.active {
+            background: #f97316;
+            color: #fff;
+            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2);
+        }
+        
+        .step-dot.done {
+            background: #22c55e;
+            color: #fff;
+        }
+        
+        .step-dot.inactive {
+            background: #e2e8f0;
+            color: #94a3b8;
+        }
+        
+        .step-line {
+            flex: 1;
+            height: 2px;
+            border-radius: 9999px;
+            transition: background 0.3s ease;
+        }
+        
+        .step-line.done {
+            background: #22c55e;
+        }
+        
+        .step-line.inactive {
+            background: #e2e8f0;
+        }
+        
+        .tooltip {
+            position: relative;
+        }
+        
+        .tooltip .tooltip-box {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: #f8fafc;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 8px;
+            white-space: nowrap;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+            z-index: 50;
+        }
+        
+        .tooltip:hover .tooltip-box {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .prompt-chip {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .prompt-chip:hover {
+            transform: translateY(-1px);
+        }
+        
+        .prompt-chip:active {
+            transform: scale(0.97);
+        }
+        /* Tab system */
+        
+        .main-tab-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .main-tab-btn.active {
+            background: #0f172a;
+            color: #fff;
+            box-shadow: 0 4px 15px -3px rgba(15, 23, 42, 0.2);
+        }
+        /* Upload drop zone */
+        
+        .drop-zone {
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        
+        .drop-zone:hover,
+        .drop-zone.drag-over {
+            border-color: #f97316;
+            background: rgba(249, 115, 22, 0.03);
+        }
+        /* Fee card */
+        
+        .fee-step {
+            counter-increment: fee-counter;
+        }
+        
+        .fee-step::before {
+            content: counter(fee-counter);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #f97316;
+            color: #fff;
+            font-weight: 900;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+        
+        .fee-steps {
+            counter-reset: fee-counter;
+        }
+        /* Contributor badge */
+        
+        .badge-tier {
+            background: linear-gradient(135deg, #fbbf24, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+        
+        .float-anim {
+            animation: float 3s ease-in-out infinite;
+        }
     </style>
 </head>
 
 <body class="text-slate-900">
 
+    <!-- NAVBAR -->
     <nav class="sticky top-0 z-[100] bg-white/70 backdrop-blur-xl border-b border-slate-200/60">
         <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-5">
             <div class="flex items-center gap-3">
@@ -92,89 +237,196 @@
                 <h1 class="text-2xl font-black tracking-tighter text-slate-900">Uni Gift <span class="text-orange-500 italic">Studio</span></h1>
             </div>
             <div class="hidden md:flex space-x-10 font-bold text-slate-500">
-                <a href="index.html" class="hover:text-orange-500 transition-all duration-300">Home</a>
-                <a href="products.html" class="hover:text-orange-500 transition-all duration-300">Products</a>
+                <a href="../index.html" class="hover:text-orange-500 transition-all duration-300">Home</a>
+                <a href="../products.html" class="hover:text-orange-500 transition-all duration-300">Products</a>
                 <a href="custom-ai.html" class="text-orange-600 border-b-4 border-orange-500/30">✨ Custom AI</a>
             </div>
-            <div class="flex items-center gap-6">
-                <a href="login.html" class="text-slate-600 font-bold hover:text-slate-950 transition-colors text-sm">Login</a>
-                <button class="bg-slate-950 text-white px-8 py-3 rounded-2xl font-black hover:bg-orange-600 transition-all shadow-xl shadow-slate-200 transform hover:scale-105 text-sm">Join Now</button>
+            <div id="navbar-auth" class="flex items-center gap-6">
+                <a href="../login.html" class="text-slate-600 font-bold hover:text-slate-950 transition-colors text-sm">Login</a>
+                <a href="../register.html" class="bg-slate-950 text-white px-8 py-3 rounded-2xl font-black hover:bg-orange-600 transition-all shadow-xl shadow-slate-200 transform hover:scale-105 text-sm">Join Now</a>
             </div>
         </div>
     </nav>
 
+    <!-- HEADER -->
+    <header class="relative bg-gradient-to-b from-orange-100/60 via-orange-50/30 to-slate-50 pt-14 pb-10 border-b border-slate-200 overflow-hidden">
+        <div class="absolute inset-0 pointer-events-none opacity-50">
+            <div class="absolute -top-20 left-1/4 w-96 h-96 bg-orange-200 rounded-full mix-blend-multiply filter blur-[80px] opacity-40"></div>
+            <div class="absolute -top-20 right-1/4 w-96 h-96 bg-yellow-100 rounded-full mix-blend-multiply filter blur-[80px] opacity-40"></div>
+        </div>
+        <div class="max-w-5xl mx-auto px-6 relative z-10 text-center">
+            <span class="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-widest text-orange-600 uppercase bg-orange-100 rounded-full">
+                Platform Kreatif Terbuka
+            </span>
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-slate-900 leading-tight">
+                Buat, Upload & <span class="text-orange-500">Hasilkan</span>
+            </h1>
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto font-medium leading-relaxed mb-8">
+                Generate desain 3D dengan AI, upload karya kamu sendiri, atau daftarkan organisasimu sebagai kontributor resmi Uni Gift Studio.
+            </p>
+
+            <!-- 3 Feature highlights -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto text-left">
+                <div class="bg-white/70 rounded-2xl p-4 border border-orange-100 shadow-sm flex items-start gap-3 cursor-pointer hover:border-orange-300 transition" onclick="switchTab('ai-studio')">
+                    <span class="text-2xl">🤖</span>
+                    <div>
+                        <p class="font-bold text-slate-800 text-sm">AI Studio</p>
+                        <p class="text-xs text-slate-500">Generate + upload referensi</p>
+                    </div>
+                </div>
+                <div class="bg-white/70 rounded-2xl p-4 border border-green-100 shadow-sm flex items-start gap-3 cursor-pointer hover:border-green-300 transition" onclick="switchTab('submit-design')">
+                    <span class="text-2xl">🎨</span>
+                    <div>
+                        <p class="font-bold text-slate-800 text-sm">Upload & Earn</p>
+                        <p class="text-xs text-slate-500">Submit design, dapat fee 15%</p>
+                    </div>
+                </div>
+                <div class="bg-white/70 rounded-2xl p-4 border border-blue-100 shadow-sm flex items-start gap-3 cursor-pointer hover:border-blue-300 transition" onclick="switchTab('kontributor')">
+                    <span class="text-2xl">🤝</span>
+                    <div>
+                        <p class="font-bold text-slate-800 text-sm">Jadi Kontributor</p>
+                        <p class="text-xs text-slate-500">HIMA/komunitas bisa kolaborasi</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN TAB NAVIGATION -->
+    <div class="sticky top-[73px] z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/60">
+        <div class="max-w-7xl mx-auto px-6 flex gap-2 py-3">
+            <button id="tab-btn-ai-studio" onclick="switchTab('ai-studio')" class="main-tab-btn active flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm">
+                🤖 AI Studio
+            </button>
+            <button id="tab-btn-submit-design" onclick="switchTab('submit-design')" class="main-tab-btn flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm text-slate-500 hover:bg-slate-100">
+                🎨 Upload & Earn
+            </button>
+            <button id="tab-btn-kontributor" onclick="switchTab('kontributor')" class="main-tab-btn flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm text-slate-500 hover:bg-slate-100">
+                Jadi Kontributor
+            </button>
+        </div>
+    </div>
+
     <main class="w-full">
-        <header class="relative bg-gradient-to-b from-orange-100/60 via-orange-50/30 to-slate-50 pt-16 pb-12 border-b border-slate-200 overflow-hidden w-full">
-            <div class="absolute inset-0 pointer-events-none opacity-50">
-                <div class="absolute -top-20 left-1/4 w-96 h-96 bg-orange-200 rounded-full mix-blend-multiply filter blur-[80px] opacity-40"></div>
-                <div class="absolute -top-20 right-1/4 w-96 h-96 bg-yellow-100 rounded-full mix-blend-multiply filter blur-[80px] opacity-40"></div>
-            </div>
 
-            <div class="max-w-4xl mx-auto px-6 relative z-10 text-center">
-                <span class="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-widest text-orange-600 uppercase bg-orange-100 rounded-full">
-                    Eksplorasi Kreativitas
-                </span>
-                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-5 text-slate-900 leading-tight">
-                    Rancang <span class="text-orange-500">Masa Depan</span>
-                </h1>
-                <p class="text-lg text-slate-500 max-w-2xl mx-auto font-medium leading-relaxed opacity-80">
-                    Gunakan teknologi AI Max-Render kami untuk memvisualisasikan ide souvenir kamu ke dalam model 3D siap cetak secara real-time.
-                </p>
-            </div>
-        </header>
-
-        <div class="max-w-7xl mx-auto px-6 py-12">
+        <!-- ============================================================
+             TAB 1: AI STUDIO
+        ============================================================ -->
+        <div id="tab-ai-studio" class="tab-content max-w-7xl mx-auto px-6 py-12">
             <div class="grid lg:grid-cols-3 gap-10">
 
+                <!-- CONFIG PANEL -->
                 <div class="lg:col-span-1">
                     <div class="glass-card p-8 rounded-[2.5rem] border border-white shadow-2xl">
-                        <h2 class="text-2xl font-black mb-8 flex items-center gap-4 text-slate-800 tracking-tight">
+
+                        <h2 class="text-2xl font-black mb-6 flex items-center gap-4 text-slate-800 tracking-tight">
                             <span class="bg-orange-100 w-10 h-10 flex items-center justify-center rounded-xl text-lg">🛠️</span> Config
                         </h2>
 
-                        <div class="space-y-6">
-                            <div class="space-y-4">
-                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2">Langkah 1: Prompt Desain</label>
-                                <textarea id="userPrompt" rows="4" class="w-full bg-white/50 border border-slate-200 rounded-3xl p-5 text-slate-800 placeholder-slate-400 focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all outline-none text-sm font-medium shadow-inner resize-none"
-                                    placeholder="Jelaskan detail souvenir impianmu..."></textarea>
+                        <!-- Step progress -->
+                        <div class="flex items-center gap-2 mb-8">
+                            <div class="step-dot active" id="dot1">1</div>
+                            <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest hidden sm:block">Prompt</span>
+                            <div class="step-line inactive" id="line1"></div>
+                            <div class="step-dot inactive" id="dot2">2</div>
+                            <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest hidden sm:block">Material</span>
+                            <div class="step-line inactive" id="line2"></div>
+                            <div class="step-dot inactive" id="dot3">3</div>
+                            <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest hidden sm:block">Generate</span>
+                        </div>
+
+                        <div class="space-y-5">
+
+                            <!-- STEP 1: Prompt -->
+                            <div class="space-y-3">
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2">Langkah 1: Deskripsi Desain</label>
+                                <textarea id="userPrompt" rows="3" class="w-full bg-white/50 border border-slate-200 rounded-3xl p-5 text-slate-800 placeholder-slate-400 focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all outline-none text-sm font-medium shadow-inner resize-none"
+                                    placeholder="Jelaskan souvenir impianmu..." oninput="updateSteps()"></textarea>
+
+                                <!-- Quick chips -->
+                                <div class="flex flex-wrap gap-2">
+                                    <button class="prompt-chip bg-orange-50 border border-orange-200 text-orange-700 text-[10px] font-bold px-3 py-1.5 rounded-full hover:bg-orange-100" onclick="fillPrompt('Gantungan kunci berbentuk hati dengan nama pasangan, warna merah metalik')">💕 Gantungan kunci hati</button>
+                                    <button class="prompt-chip bg-orange-50 border border-orange-200 text-orange-700 text-[10px] font-bold px-3 py-1.5 rounded-full hover:bg-orange-100" onclick="fillPrompt('Mini statue kucing lucu duduk dengan mahkota kecil, warna putih dan emas')">🐱 Mini statue kucing</button>
+                                    <button class="prompt-chip bg-orange-50 border border-orange-200 text-orange-700 text-[10px] font-bold px-3 py-1.5 rounded-full hover:bg-orange-100" onclick="fillPrompt('Kaos kaki dengan motif batik mega mendung biru dongker modern')">🧦 Kaos kaki batik</button>
+                                </div>
                             </div>
 
-                            <div class="grid grid-cols-2 gap-4">
+                            <!-- UPLOAD REFERENSI (fitur baru) -->
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2">Upload Referensi <span class="text-slate-300 normal-case font-semibold">(opsional)</span></label>
+                                <div id="refDropZone" class="drop-zone rounded-2xl p-5 text-center cursor-pointer" onclick="document.getElementById('refFileInput').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+                                    <div id="refPlaceholder" class="space-y-1">
+                                        <div class="text-2xl">📎</div>
+                                        <p class="text-xs font-bold text-slate-400">Drag & drop atau klik untuk upload</p>
+                                        <p class="text-[10px] text-slate-300">PNG, JPG, SVG · Maks. 5MB</p>
+                                    </div>
+                                    <div id="refPreview" class="hidden">
+                                        <img id="refPreviewImg" class="max-h-24 mx-auto rounded-xl object-contain" src="">
+                                        <p id="refFileName" class="text-[10px] font-bold text-green-600 mt-2"></p>
+                                        <button onclick="clearRef(event)" class="text-[10px] text-red-400 font-bold mt-1 hover:underline">Hapus</button>
+                                    </div>
+                                </div>
+                                <input type="file" id="refFileInput" accept="image/*,.stl,.obj" class="hidden" onchange="handleRefFile(event)">
+                                <p class="text-[10px] text-slate-400 ml-2">💡 AI akan menyesuaikan output dengan referensi yang kamu upload</p>
+                            </div>
+
+                            <!-- Style & Quality -->
+                            <div class="grid grid-cols-2 gap-3">
                                 <div class="space-y-2">
                                     <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Visual Style</label>
-                                    <select class="w-full bg-white/50 border border-slate-200 p-3 rounded-xl text-xs font-bold text-slate-600 outline-none focus:border-orange-500 shadow-sm">
-                                        <option>Photorealistic</option>
-                                        <option>Minimalist 3D</option>
-                                        <option>Cyberpunk</option>
+                                    <select id="visualStyle" class="w-full bg-white/50 border border-slate-200 p-3 rounded-xl text-xs font-bold text-slate-600 outline-none focus:border-orange-500 shadow-sm">
+                                        <option value="Photorealistic">Photorealistic</option>
+                                        <option value="Minimalist 3D">Minimalist 3D</option>
+                                        <option value="Cyberpunk">Cyberpunk</option>
+                                        <option value="Kawaii">Kawaii</option>
                                     </select>
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Kualitas</label>
-                                    <select class="w-full bg-white/50 border border-slate-200 p-3 rounded-xl text-xs font-bold text-slate-600 outline-none focus:border-orange-500 shadow-sm">
-                                        <option>Ultra Max</option>
-                                        <option>Draft</option>
+                                    <select id="kualitas" class="w-full bg-white/50 border border-slate-200 p-3 rounded-xl text-xs font-bold text-slate-600 outline-none focus:border-orange-500 shadow-sm">
+                                        <option value="Ultra Max">Ultra Max</option>
+                                        <option value="Draft">Draft</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="space-y-4">
+                            <!-- STEP 2: Material -->
+                            <div class="space-y-3">
                                 <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2">Langkah 2: Material Dasar</label>
-                                <div class="flex flex-wrap gap-2">
-                                    <button class="px-4 py-2 rounded-xl text-[10px] font-black bg-orange-500 text-white shadow-lg shadow-orange-100 uppercase tracking-widest transition-all hover:scale-105 active:scale-95">Resin Crystal</button>
-                                    <button class="px-4 py-2 rounded-xl text-[10px] font-black bg-white text-slate-500 border border-slate-200 hover:border-orange-500 uppercase tracking-widest transition-all">PLA Matte</button>
+                                <div class="flex flex-wrap gap-2" id="materialContainer">
+                                    <div class="tooltip">
+                                        <button data-material="Resin Crystal" class="material-btn px-4 py-2.5 rounded-xl text-[10px] font-black bg-orange-500 text-white shadow-lg shadow-orange-100 uppercase tracking-widest transition-all hover:scale-105 active:scale-95 flex items-center gap-2">💎 Resin Crystal</button>
+                                        <div class="tooltip-box">Transparan, kilap tinggi, cocok detail halus</div>
+                                    </div>
+                                    <div class="tooltip">
+                                        <button data-material="PLA Matte" class="material-btn px-4 py-2.5 rounded-xl text-[10px] font-black bg-white text-slate-500 border border-slate-200 hover:border-orange-500 uppercase tracking-widest transition-all flex items-center gap-2">🧱 PLA Matte</button>
+                                        <div class="tooltip-box">Matte, ramah lingkungan, warna solid</div>
+                                    </div>
+                                    <div class="tooltip">
+                                        <button data-material="Metal Cast" class="material-btn px-4 py-2.5 rounded-xl text-[10px] font-black bg-white text-slate-500 border border-slate-200 hover:border-orange-500 uppercase tracking-widest transition-all flex items-center gap-2">⚙️ Metal Cast</button>
+                                        <div class="tooltip-box">Logam cor, premium, tahan lama</div>
+                                    </div>
+                                </div>
+                                <div class="text-[10px] text-slate-400 font-semibold ml-2 flex items-center gap-1.5">
+                                    <span id="materialInfoText">💎 Resin Crystal — transparan & kilap tinggi, cocok untuk detail halus.</span>
                                 </div>
                             </div>
 
-                            <button onclick="generateModel()" class="btn-generate w-full text-white py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-4 group">
+                            <!-- Generate -->
+                            <button onclick="generateModel()" id="generateBtn" class="btn-generate w-full text-white py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-4 group">
                                 GENERATE RENDER <span class="text-xl group-hover:rotate-12 transition-transform">⚡</span>
                             </button>
+
+                            <p id="saveStatus" class="text-center text-xs font-bold text-slate-400 hidden"></p>
                         </div>
                     </div>
                 </div>
 
+                <!-- VIEWPORT -->
                 <div class="lg:col-span-2 space-y-8">
-                    <div class="viewport-container rounded-[3.5rem] aspect-video flex flex-col items-center justify-center shadow-2xl border-4 border-slate-900 group">
+                    <div class="viewport-container rounded-[3.5rem] aspect-video flex flex-col items-center justify-center shadow-2xl border-4 border-slate-900">
 
+                        <!-- HUD top bar -->
                         <div class="absolute top-8 left-8 right-8 flex justify-between items-center z-[35]">
                             <div class="flex items-center gap-3 bg-slate-900/60 backdrop-blur-2xl px-4 py-2 rounded-2xl border border-white/10 shadow-2xl">
                                 <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.8)]"></span>
@@ -185,6 +437,7 @@
                             </div>
                         </div>
 
+                        <!-- Initial state -->
                         <div id="initialState" class="relative z-30 text-center space-y-6 px-10 transition-all duration-1000">
                             <div class="relative mx-auto w-32 h-32">
                                 <div class="absolute inset-0 border-[6px] border-orange-500/10 rounded-[2.5rem]"></div>
@@ -192,80 +445,776 @@
                                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-orange-500 font-black text-4xl italic">AI</div>
                             </div>
                             <h3 class="text-white text-2xl font-black tracking-tight uppercase">Ready to Visualize</h3>
-                            <p class="text-slate-400 text-sm font-medium">Tekan generate untuk membangun struktur 3D.</p>
+                            <p class="text-slate-400 text-sm font-medium">Tekan generate untuk membangun model 3D.</p>
                         </div>
 
+                        <!-- Loading overlay -->
                         <div id="loadingOverlay" class="absolute inset-0 z-[45] bg-slate-950/80 items-center justify-center hidden">
-                            <div class="text-center">
+                            <div class="text-center space-y-4">
                                 <div class="w-12 h-12 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin mx-auto"></div>
-                                <p class="mt-4 text-orange-500 font-black tracking-widest text-[10px] uppercase">AI is Creating...</p>
+                                <p class="text-orange-500 font-black tracking-widest text-[10px] uppercase">AI is Creating...</p>
+                                <p class="text-slate-500 text-xs" id="loadingTip">Memproses prompt kamu...</p>
                             </div>
                         </div>
 
+                        <!-- Result state -->
                         <div id="resultState" class="absolute inset-0 opacity-0 scale-110 transition-all duration-1000 flex items-center justify-center p-12 z-[40]">
                             <div class="absolute inset-0 bg-orange-500/5 blur-[120px] rounded-full glow-pulse"></div>
                             <img id="renderImage" src="" class="object-contain max-h-full rounded-[2rem] shadow-2xl border border-white/10">
-
                             <div class="absolute bottom-8 flex items-center gap-5 bg-slate-900/80 backdrop-blur-3xl px-8 py-4 rounded-[2rem] border border-white/20 shadow-2xl z-[50]">
                                 <button class="text-white/70 hover:text-orange-400 transition-all text-xs font-black uppercase tracking-widest">🔄 Orbit</button>
                                 <div class="w-px h-4 bg-white/10"></div>
                                 <button class="text-white/70 hover:text-orange-400 transition-all text-xs font-black uppercase tracking-widest">🔍 Zoom</button>
+                                <div class="w-px h-4 bg-white/10"></div>
+                                <button onclick="submitToStore()" class="text-orange-400 hover:text-orange-300 transition-all text-xs font-black uppercase tracking-widest">📤 Submit ke Store</button>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Action panel -->
                     <div id="actionPanel" class="glass-card p-8 rounded-[3rem] opacity-0 translate-y-10 pointer-events-none transition-all duration-700 ease-out border-white">
                         <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                             <div class="flex items-center gap-6">
                                 <div class="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center text-3xl">💎</div>
                                 <div>
-                                    <h3 class="text-2xl font-black text-slate-950 tracking-tighter">Custom AI Souvenir</h3>
+                                    <h3 id="actionTitle" class="text-2xl font-black text-slate-950 tracking-tighter">Custom AI Souvenir</h3>
                                     <p class="text-slate-400 font-bold text-[10px] uppercase tracking-widest mt-1">Prototype Ready to Ship</p>
                                 </div>
                             </div>
-                            <div class="flex gap-3">
-                                <button class="px-6 py-4 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-all text-xs uppercase tracking-widest">Export .OBJ</button>
-                                <button class="bg-slate-950 text-white px-10 py-4 rounded-xl font-black hover:bg-orange-600 transition-all shadow-xl text-xs uppercase tracking-widest">Checkout Now</button>
+                            <div class="flex gap-3 flex-wrap justify-center">
+                                <button onclick="exportImage()" class="px-6 py-4 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-all text-xs uppercase tracking-widest">⬇️ Download</button>
+                                <button onclick="switchTab('submit-design')" class="px-6 py-4 rounded-xl font-bold text-green-700 bg-green-100 hover:bg-green-200 transition-all text-xs uppercase tracking-widest">Submit & Earn 💰</button>
+                                <button onclick="goCheckout()" class="bg-slate-950 text-white px-10 py-4 rounded-xl font-black hover:bg-orange-600 transition-all shadow-xl text-xs uppercase tracking-widest">🛒 Pesan Sekarang</button>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- History Panel -->
+                    <div id="historyPanel" class="hidden">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-black text-slate-700 text-sm uppercase tracking-widest">🕒 Riwayat Generate</h3>
+                            <button onclick="clearHistory()" class="text-[10px] text-red-400 font-bold hover:underline">Hapus Semua</button>
+                        </div>
+                        <div id="historyGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             TAB 2: UPLOAD & EARN
+        ============================================================ -->
+        <div id="tab-submit-design" class="tab-content hidden max-w-5xl mx-auto px-6 py-12">
+
+            <!-- Hero earn section -->
+            <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-10 mb-10 relative overflow-hidden">
+                <div class="absolute -right-10 -top-10 w-64 h-64 bg-orange-500 opacity-10 rounded-full"></div>
+                <div class="absolute -left-10 -bottom-10 w-48 h-48 bg-green-500 opacity-10 rounded-full"></div>
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div>
+                        <span class="inline-block px-3 py-1 mb-3 text-xs font-black tracking-widest text-green-400 uppercase bg-green-400/10 rounded-full border border-green-400/20">💰 Creator Program</span>
+                        <h2 class="text-3xl font-black text-white mb-3">Upload Desain, Hasilkan Uang</h2>
+                        <p class="text-slate-400 text-sm font-medium max-w-lg leading-relaxed">Punya desain keren? Upload ke platform kami. Setiap kali desainmu dibeli oleh pelanggan, kamu otomatis dapat <span class="text-green-400 font-black">15% fee dari harga jual</span>. Tanpa batas penghasilan.</p>
+                    </div>
+                    <div class="text-center float-anim shrink-0">
+                        <div class="text-7xl mb-2">🎨</div>
+                        <div class="bg-green-500/20 border border-green-500/30 rounded-2xl px-6 py-3">
+                            <p class="text-green-400 font-black text-2xl">15%</p>
+                            <p class="text-slate-400 text-[10px] uppercase font-bold tracking-widest">Fee per Penjualan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How it works -->
+            <div class="mb-10">
+                <h3 class="text-xl font-black text-slate-800 mb-6">Cara Kerja</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 fee-steps">
+                    <div class="fee-step bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex gap-4 items-start">
+                        <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-black text-sm shrink-0">1</div>
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">Upload Desain</p>
+                            <p class="text-xs text-slate-400 mt-1">Upload file PNG/JPG/STL desainmu</p>
+                        </div>
+                    </div>
+                    <div class="fee-step bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex gap-4 items-start">
+                        <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-black text-sm shrink-0">2</div>
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">Review Tim</p>
+                            <p class="text-xs text-slate-400 mt-1">Tim kami review dalam 1–3 hari kerja</p>
+                        </div>
+                    </div>
+                    <div class="fee-step bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex gap-4 items-start">
+                        <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-black text-sm shrink-0">3</div>
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">Masuk Katalog</p>
+                            <p class="text-xs text-slate-400 mt-1">Desain tampil di toko dengan nama kamu</p>
+                        </div>
+                    </div>
+                    <div class="fee-step bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex gap-4 items-start">
+                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-black text-sm shrink-0">💰</div>
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">Terima Fee</p>
+                            <p class="text-xs text-slate-400 mt-1">15% per terjual, dibayar tiap bulan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload form -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-8">
+                <h3 class="text-xl font-black text-slate-800 mb-6">Submit Desainmu</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Upload area -->
+                    <div>
+                        <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-3">File Desain *</label>
+                        <div id="designDropZone" class="drop-zone rounded-2xl p-8 text-center cursor-pointer min-h-[200px] flex flex-col items-center justify-center" onclick="document.getElementById('designFileInput').click()" ondragover="onDragOver(event,'designDropZone')"
+                            ondragleave="onDragLeave(event,'designDropZone')" ondrop="onDropDesign(event)">
+                            <div id="designPlaceholder">
+                                <div class="text-4xl mb-3">📂</div>
+                                <p class="font-bold text-slate-600 text-sm">Drag & drop file desain kamu</p>
+                                <p class="text-xs text-slate-400 mt-1">PNG, JPG, SVG, STL · Maks. 20MB</p>
+                                <button class="mt-4 bg-orange-50 border border-orange-200 text-orange-600 px-5 py-2 rounded-xl font-bold text-xs hover:bg-orange-100 transition">Pilih File</button>
+                            </div>
+                            <div id="designPreviewWrap" class="hidden w-full">
+                                <img id="designPreviewImg" src="" class="max-h-40 mx-auto rounded-xl object-contain mb-3">
+                                <p id="designFileName" class="text-xs font-bold text-green-600 text-center"></p>
+                                <button onclick="clearDesign(event)" class="block mx-auto mt-2 text-[10px] text-red-400 font-bold hover:underline">Ganti File</button>
+                            </div>
+                        </div>
+                        <input type="file" id="designFileInput" accept="image/*,.stl,.obj" class="hidden" onchange="handleDesignFile(event)">
+                    </div>
+
+                    <!-- Form fields -->
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Nama Desain *</label>
+                            <input id="design-nama" type="text" placeholder="Contoh: Gantungan Kunci Bunga Sakura" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Kategori *</label>
+                            <select id="design-kategori" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                                <option value="">-- Pilih Kategori --</option>
+                                <option value="Keychain">Keychain / Gantungan Kunci</option>
+                                <option value="Statue">Mini Statue / Patung</option>
+                                <option value="Figure">Action Figure</option>
+                                <option value="Socks">Kaos Kaki Custom</option>
+                                <option value="Custom">Lainnya (Custom)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Deskripsi Desain</label>
+                            <textarea id="design-deskripsi" rows="3" placeholder="Ceritakan inspirasi atau keunikan desainmu..." class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium resize-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Saran Harga Jual (Rp)</label>
+                            <input id="design-harga" type="number" min="10000" placeholder="Contoh: 75000" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                            <p class="text-[10px] text-slate-400 mt-1 ml-1">Tim akan menentukan harga final. Fee kamu = 15% × harga jual.</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Email / WhatsApp *</label>
+                            <input id="design-kontak" type="text" placeholder="Untuk notifikasi approval & pembayaran fee" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
                         </div>
                     </div>
                 </div>
 
+                <!-- Terms & Submit -->
+                <div class="mt-6 pt-6 border-t border-slate-100">
+                    <label class="flex items-start gap-3 cursor-pointer mb-6">
+                        <input type="checkbox" id="design-terms" class="mt-0.5 accent-orange-500">
+                        <span class="text-xs text-slate-500 font-medium">Saya menyatakan bahwa desain ini adalah karya original saya dan saya menyetujui <span class="text-orange-500 font-bold underline cursor-pointer">syarat & ketentuan</span> program Creator Uni Gift Studio.</span>
+                    </label>
+
+                    <p id="design-msg" class="hidden text-sm font-bold text-center mb-4"></p>
+
+                    <button onclick="submitDesign()" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-4 rounded-2xl font-black text-base hover:from-green-600 hover:to-emerald-700 transition shadow-lg shadow-green-200">
+                        Submit Desain & Daftar Jadi Creator 🚀
+                    </button>
+                </div>
             </div>
         </div>
+
+        <!-- ============================================================
+             TAB 3: JADI KONTRIBUTOR
+        ============================================================ -->
+        <div id="tab-kontributor" class="tab-content hidden max-w-5xl mx-auto px-6 py-12">
+
+            <!-- Hero -->
+            <div class="bg-gradient-to-br from-blue-900 to-slate-900 rounded-3xl p-10 mb-10 relative overflow-hidden">
+                <div class="absolute -right-16 -top-16 w-72 h-72 bg-blue-500 opacity-10 rounded-full"></div>
+                <div class="absolute -left-8 -bottom-8 w-40 h-40 bg-orange-500 opacity-10 rounded-full"></div>
+                <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
+                    <div class="text-6xl float-anim shrink-0">🤝</div>
+                    <div>
+                        <span class="inline-block px-3 py-1 mb-3 text-xs font-black tracking-widest text-blue-300 uppercase bg-blue-300/10 rounded-full border border-blue-300/20">Open Contributor Program</span>
+                        <h2 class="text-3xl font-black text-white mb-3">Kolaborasi Bersama Kami</h2>
+                        <p class="text-slate-400 text-sm font-medium leading-relaxed max-w-xl">Apakah organisasimu — HIMA, UKM, komunitas kreatif, atau brand lokal — ingin bersama menghadirkan souvenir eksklusif? Daftarkan diri sebagai kontributor resmi Uni Gift Studio dan nikmati keuntungan kolaborasi bersama.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefit tiers -->
+            <div class="mb-10">
+                <h3 class="text-xl font-black text-slate-800 mb-6">Tier Kontributor</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Bronze -->
+                    <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-orange-100 rounded-bl-full opacity-50"></div>
+                        <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Tier</p>
+                        <h4 class="text-2xl font-black text-orange-600 mb-4">🥉 Bronze</h4>
+                        <p class="text-xs font-bold text-slate-500 mb-4">Untuk komunitas & UKM kecil</p>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-center gap-2"><span class="text-green-500 font-black">✓</span> Logo di halaman Mitra</li>
+                            <li class="flex items-center gap-2"><span class="text-green-500 font-black">✓</span> 1 desain eksklusif/bulan</li>
+                            <li class="flex items-center gap-2"><span class="text-green-500 font-black">✓</span> Diskon produk 10%</li>
+                            <li class="flex items-center gap-2"><span class="text-slate-300 font-black">—</span><span class="text-slate-400"> Revenue share</span></li>
+                        </ul>
+                    </div>
+                    <!-- Silver -->
+                    <div class="bg-white rounded-3xl border-2 border-orange-500 shadow-xl p-6 relative overflow-hidden">
+                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-widest">Paling Populer</div>
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-orange-100 rounded-bl-full opacity-50"></div>
+                        <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-2 mt-2">Tier</p>
+                        <h4 class="text-2xl font-black text-orange-500 mb-4">🥈 Silver</h4>
+                        <p class="text-xs font-bold text-slate-500 mb-4">Untuk HIMA & organisasi kampus</p>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-center gap-2"><span class="text-green-500 font-black">✓</span> Logo + halaman profil khusus</li>
+                            <li class="flex items-center gap-2"><span class="text-green-500 font-black">✓</span> 3 desain eksklusif/bulan</li>
+                            <li class="flex items-center gap-2"><span class="text-green-500 font-black">✓</span> Diskon produk 20%</li>
+                            <li class="flex items-center gap-2"><span class="text-green-500 font-black">✓</span> Revenue share 10%</li>
+                        </ul>
+                    </div>
+                    <!-- Gold -->
+                    <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl shadow-xl p-6 relative overflow-hidden text-white">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-yellow-500 rounded-bl-full opacity-10"></div>
+                        <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Tier</p>
+                        <h4 class="text-2xl font-black text-yellow-400 mb-4">🥇 Gold</h4>
+                        <p class="text-xs font-bold text-slate-400 mb-4">Untuk brand & perusahaan</p>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-center gap-2"><span class="text-green-400 font-black">✓</span> Co-branding penuh</li>
+                            <li class="flex items-center gap-2"><span class="text-green-400 font-black">✓</span> Desain eksklusif unlimited</li>
+                            <li class="flex items-center gap-2"><span class="text-green-400 font-black">✓</span> Diskon produk 30%</li>
+                            <li class="flex items-center gap-2"><span class="text-green-400 font-black">✓</span> Revenue share 20%</li>
+                            <li class="flex items-center gap-2"><span class="text-green-400 font-black">✓</span> Account manager khusus</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pendaftaran form -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-8">
+                <h3 class="text-xl font-black text-slate-800 mb-2">Daftar Jadi Kontributor</h3>
+                <p class="text-sm text-slate-500 mb-6">Tim kami akan menghubungi kamu dalam 2–3 hari kerja setelah pendaftaran.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Nama Organisasi / Brand *</label>
+                        <input id="c-org" type="text" placeholder="Contoh: HIMA Informatika UNX" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Tipe Organisasi *</label>
+                        <select id="c-tipe" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                            <option value="">-- Pilih Tipe --</option>
+                            <option value="HIMA">HIMA / BEM / Organisasi Kampus</option>
+                            <option value="UKM">UKM / Komunitas</option>
+                            <option value="Brand">Brand Lokal</option>
+                            <option value="Perusahaan">Perusahaan / Startup</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Nama PIC (Penanggung Jawab) *</label>
+                        <input id="c-pic" type="text" placeholder="Nama lengkap" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Email *</label>
+                        <input id="c-email" type="email" placeholder="email@organisasi.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Nomor WhatsApp *</label>
+                        <input id="c-wa" type="tel" placeholder="08xxxxxxxxxx" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Tier yang Diminati</label>
+                        <select id="c-tier" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium">
+                            <option value="Bronze">🥉 Bronze</option>
+                            <option value="Silver" selected>🥈 Silver (Populer)</option>
+                            <option value="Gold">🥇 Gold</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Pesan / Proposal Singkat</label>
+                        <textarea id="c-pesan" rows="3" placeholder="Ceritakan tentang organisasimu dan bagaimana kita bisa kolaborasi..." class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-orange-500 text-sm font-medium resize-none"></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-6 border-t border-slate-100">
+                    <p id="kontributor-msg" class="hidden text-sm font-bold text-center mb-4"></p>
+                    <button onclick="submitKontributor()" class="w-full bg-gradient-to-r from-blue-600 to-slate-800 text-white py-4 rounded-2xl font-black text-base hover:from-blue-700 hover:to-slate-900 transition shadow-lg shadow-blue-200">
+                        Kirim Pendaftaran Kontributor 🤝
+                    </button>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <script>
-        function generateModel() {
-            const prompt = document.getElementById('userPrompt').value;
-            if (!prompt) return alert("Silakan isi deskripsi dulu!");
+        const API_BASE = 'http://localhost:3000';
+        let selectedMaterial = 'Resin Crystal';
+        let refFile = null;
+        let designFile = null;
+        let currentImageUrl = '';
 
+        const materialDescriptions = {
+            'Resin Crystal': '💎 Resin Crystal — transparan & kilap tinggi, cocok untuk detail halus.',
+            'PLA Matte': '🧱 PLA Matte — matte & ramah lingkungan, ideal untuk warna solid.',
+            'Metal Cast': '⚙️ Metal Cast — logam cor premium, sangat tahan lama & eksklusif.',
+        };
+
+        // ── Auth-aware navbar ─────────────────────────────────────────
+        (function () {
+            const adminToken = localStorage.getItem('adminToken');
+            const adminUser  = JSON.parse(localStorage.getItem('adminUser') || 'null');
+            const userToken  = localStorage.getItem('userToken');
+            const userSession = JSON.parse(localStorage.getItem('userSession') || 'null');
+            const authDiv = document.getElementById('navbar-auth');
+            if (!authDiv) return;
+
+            if (adminToken && adminUser?.role === 'admin') {
+                const namaAdmin = adminUser.nama_lengkap || adminUser.nama || 'Admin';
+                authDiv.innerHTML = `
+                    <span class="text-sm font-bold text-slate-500">Halo, <span class="text-orange-500">${namaAdmin}</span></span>
+                    <a href="../dashboard_admin.html" class="bg-slate-950 text-white px-8 py-3 rounded-2xl font-black hover:bg-orange-600 transition-all shadow-xl text-sm">Dashboard Admin</a>`;
+            } else if (userToken && userSession) {
+                const nama = userSession.nama_lengkap || userSession.nama || 'Pengguna';
+                const role = userSession.role;
+                const dashHref = role === 'kreator' ? '../seller/dashboard.html' : '../index.html';
+                authDiv.innerHTML = `
+                    <span class="text-sm font-bold text-slate-500">Halo, <span class="text-orange-500">${nama.split(' ')[0]}</span> 👋</span>
+                    <a href="${dashHref}" class="bg-slate-950 text-white px-8 py-3 rounded-2xl font-black hover:bg-orange-600 transition-all shadow-xl text-sm">${role === 'kreator' ? 'Dashboard' : 'Akun Saya'}</a>`;
+            }
+        })();
+
+        // ── Tab switching ─────────────────────────────────────────────
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.main-tab-btn').forEach(b => {
+                b.classList.remove('active');
+                b.classList.add('text-slate-500');
+            });
+            document.getElementById('tab-' + tab).classList.remove('hidden');
+            const btn = document.getElementById('tab-btn-' + tab);
+            btn.classList.add('active');
+            btn.classList.remove('text-slate-500');
+        }
+
+        // ── Step progress ─────────────────────────────────────────────
+        function updateSteps() {
+            const hasPrompt = document.getElementById('userPrompt').value.trim().length > 0;
+            document.getElementById('dot1').className = hasPrompt ? 'step-dot done' : 'step-dot active';
+            document.getElementById('dot1').textContent = hasPrompt ? '✓' : '1';
+            document.getElementById('line1').className = hasPrompt ? 'step-line done' : 'step-line inactive';
+            document.getElementById('dot2').className = hasPrompt ? 'step-dot active' : 'step-dot inactive';
+        }
+
+        function setStep3Active() {
+            document.getElementById('dot2').className = 'step-dot done';
+            document.getElementById('dot2').textContent = '✓';
+            document.getElementById('line2').className = 'step-line done';
+            document.getElementById('dot3').className = 'step-dot active';
+        }
+
+        // ── Prompt chip ───────────────────────────────────────────────
+        function fillPrompt(text) {
+            document.getElementById('userPrompt').value = text;
+            document.getElementById('userPrompt').focus();
+            updateSteps();
+        }
+
+        // ── Material button ───────────────────────────────────────────
+        document.getElementById('materialContainer').addEventListener('click', (e) => {
+            const btn = e.target.closest('.material-btn');
+            if (!btn) return;
+            selectedMaterial = btn.dataset.material;
+            document.querySelectorAll('.material-btn').forEach(b => {
+                b.className = 'material-btn px-4 py-2.5 rounded-xl text-[10px] font-black bg-white text-slate-500 border border-slate-200 hover:border-orange-500 uppercase tracking-widest transition-all flex items-center gap-2';
+            });
+            btn.className = 'material-btn px-4 py-2.5 rounded-xl text-[10px] font-black bg-orange-500 text-white shadow-lg shadow-orange-100 uppercase tracking-widest transition-all hover:scale-105 active:scale-95 flex items-center gap-2';
+            document.getElementById('materialInfoText').textContent = materialDescriptions[selectedMaterial] || selectedMaterial;
+        });
+
+        // ── Upload referensi ──────────────────────────────────────────
+        function handleRefFile(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            refFile = file;
+            const reader = new FileReader();
+            reader.onload = ev => {
+                document.getElementById('refPreviewImg').src = ev.target.result;
+                document.getElementById('refFileName').textContent = `✓ ${file.name}`;
+                document.getElementById('refPlaceholder').classList.add('hidden');
+                document.getElementById('refPreview').classList.remove('hidden');
+            };
+            if (file.type.startsWith('image/')) reader.readAsDataURL(file);
+            else {
+                document.getElementById('refPreviewImg').src = '';
+                document.getElementById('refFileName').textContent = `✓ ${file.name}`;
+                document.getElementById('refPlaceholder').classList.add('hidden');
+                document.getElementById('refPreview').classList.remove('hidden');
+            }
+        }
+
+        function clearRef(e) {
+            e.stopPropagation();
+            refFile = null;
+            document.getElementById('refFileInput').value = '';
+            document.getElementById('refPreview').classList.add('hidden');
+            document.getElementById('refPlaceholder').classList.remove('hidden');
+        }
+
+        // ── Upload design ─────────────────────────────────────────────
+        function handleDesignFile(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            designFile = file;
+            const reader = new FileReader();
+            reader.onload = ev => {
+                document.getElementById('designPreviewImg').src = ev.target.result;
+                document.getElementById('designFileName').textContent = `✓ ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+                document.getElementById('designPlaceholder').classList.add('hidden');
+                document.getElementById('designPreviewWrap').classList.remove('hidden');
+            };
+            if (file.type.startsWith('image/')) reader.readAsDataURL(file);
+            else {
+                document.getElementById('designPreviewImg').src = '';
+                document.getElementById('designFileName').textContent = `✓ ${file.name}`;
+                document.getElementById('designPlaceholder').classList.add('hidden');
+                document.getElementById('designPreviewWrap').classList.remove('hidden');
+            }
+        }
+
+        function clearDesign(e) {
+            e.stopPropagation();
+            designFile = null;
+            document.getElementById('designFileInput').value = '';
+            document.getElementById('designPreviewWrap').classList.add('hidden');
+            document.getElementById('designPlaceholder').classList.remove('hidden');
+        }
+
+        // ── Drag & drop helpers ───────────────────────────────────────
+        function onDragOver(e, zoneId) {
+            e.preventDefault();
+            document.getElementById(zoneId || 'refDropZone').classList.add('drag-over');
+        }
+
+        function onDragLeave(e, zoneId) {
+            document.getElementById(zoneId || 'refDropZone').classList.remove('drag-over');
+        }
+
+        function onDrop(e) {
+            e.preventDefault();
+            document.getElementById('refDropZone').classList.remove('drag-over');
+            const file = e.dataTransfer.files[0];
+            if (file) handleRefFile({ target: { files: e.dataTransfer.files } });
+        }
+
+        function onDropDesign(e) {
+            e.preventDefault();
+            document.getElementById('designDropZone').classList.remove('drag-over');
+            const file = e.dataTransfer.files[0];
+            if (file) handleDesignFile({ target: { files: e.dataTransfer.files } });
+        }
+
+        // ── Generate model ────────────────────────────────────────────
+        const loadingTips = [
+            'Memproses prompt kamu...',
+            'Membangun geometri 3D...',
+            'Menerapkan material...',
+            'Rendering lighting & shadow...',
+            'Hampir selesai! ✨',
+        ];
+
+        async function generateModel() {
+            const promptInput = document.getElementById('userPrompt').value.trim();
+            const visualStyle = document.getElementById('visualStyle').value;
+            if (!promptInput) {
+                alert('Silakan isi deskripsi souvenir dulu!');
+                document.getElementById('userPrompt').focus();
+                return;
+            }
+
+            const loading    = document.getElementById('loadingOverlay');
+            const renderImage = document.getElementById('renderImage');
             const initialState = document.getElementById('initialState');
             const resultState = document.getElementById('resultState');
             const actionPanel = document.getElementById('actionPanel');
-            const loading = document.getElementById('loadingOverlay');
-            const renderImage = document.getElementById('renderImage');
+            const generateBtn = document.getElementById('generateBtn');
+            const loadingTipEl = document.getElementById('loadingTip');
 
-            // 1. Loading Start
-            initialState.style.opacity = '0';
+            setStep3Active();
+            generateBtn.disabled = true;
+            loading.classList.remove('hidden');
             loading.style.display = 'flex';
+            initialState.style.opacity = '0';
 
-            // 2. AI Generator API (Pollinations - Gambar akan sesuai prompt!)
-            const aiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1280&height=720&nologo=true&seed=${Math.floor(Math.random() * 1000)}`;
+            let tipIdx = 0;
+            const tipInterval = setInterval(() => {
+                loadingTipEl.textContent = loadingTips[tipIdx++ % loadingTips.length];
+            }, 1500);
 
-            const tempImg = new Image();
-            tempImg.src = aiUrl;
-            tempImg.onload = () => {
-                renderImage.src = aiUrl;
+            const refNote = refFile ? `, with reference: "${refFile.name}"` : '';
+            const finalPrompt = `${promptInput}${refNote}, ${visualStyle} style, 3D souvenir product, white background`;
 
-                setTimeout(() => {
+            async function fetchWithTimeout(url, timeoutMs = 35000) {
+                const controller = new AbortController();
+                const timer = setTimeout(() => controller.abort(), timeoutMs);
+                try {
+                    const res = await fetch(url, { signal: controller.signal });
+                    clearTimeout(timer);
+                    if (!res.ok) throw new Error('API error ' + res.status);
+                    const blob = await res.blob();
+                    return URL.createObjectURL(blob);
+                } catch(e) {
+                    clearTimeout(timer);
+                    throw e;
+                }
+            }
+
+            async function tryGenerate(attempt = 1, maxAttempts = 3) {
+                const seed = Math.floor(Math.random() * 999999);
+                const size = attempt === 1 ? 768 : 512;
+                const url  = `https://image.pollinations.ai/prompt/${encodeURIComponent(finalPrompt)}?width=${size}&height=${size}&nologo=true&seed=${seed}`;
+
+                loadingTipEl.textContent = attempt > 1
+                    ? `Mencoba ulang (${attempt}/${maxAttempts})... ⏳`
+                    : tips[tipIdx % tips.length];
+
+                try {
+                    const blobUrl = await fetchWithTimeout(url, 35000);
+                    clearInterval(tipInterval);
+
+                    currentImageUrl = blobUrl;
+                    renderImage.src = blobUrl;
+
                     loading.style.display = 'none';
                     initialState.classList.add('hidden');
-                    resultState.classList.remove('opacity-0', 'scale-110');
-                    resultState.classList.add('opacity-100', 'scale-100');
-                    actionPanel.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
-                }, 1000);
-            };
+                    resultState.classList.remove('hidden','opacity-0','scale-110');
+                    resultState.classList.add('opacity-100','scale-100');
+                    actionPanel.classList.remove('hidden','opacity-0','translate-y-10','pointer-events-none');
+                    actionPanel.classList.add('opacity-100','translate-y-0');
+                    document.getElementById('dot3').className = 'step-dot done';
+                    document.getElementById('dot3').textContent = '✓';
+                    document.getElementById('actionTitle').textContent =
+                        promptInput.length > 40 ? promptInput.slice(0,40) + '…' : promptInput;
+                    generateBtn.disabled = false;
+
+                    saveToHistory({ prompt: promptInput, style: visualStyle, material: selectedMaterial, url: blobUrl, ts: Date.now() });
+                    renderHistory();
+
+                    fetch(`${API_BASE}/api/ai-request`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ prompt_text: promptInput, visual_style: visualStyle, kualitas: document.getElementById('kualitas').value, material: selectedMaterial }),
+                    }).catch(() => {});
+
+                } catch(err) {
+                    if (attempt < maxAttempts) {
+                        loadingTipEl.textContent = `Gagal, mencoba ulang (${attempt+1}/${maxAttempts})... ⏳`;
+                        await new Promise(r => setTimeout(r, 2000));
+                        await tryGenerate(attempt + 1, maxAttempts);
+                    } else {
+                        clearInterval(tipInterval);
+                        loading.style.display = 'none';
+                        generateBtn.disabled = false;
+                        initialState.style.opacity = '1';
+                        alert('AI sedang tidak bisa diakses saat ini (koneksi timeout 3x). Coba lagi dalam beberapa menit ya!');
+                    }
+                }
+            }
+
+            await tryGenerate();
+        }
+
+        // ── Export / Download image ───────────────────────────────────
+        async function exportImage() {
+            if (!currentImageUrl) return;
+            try {
+                const resp = await fetch(currentImageUrl);
+                const blob = await resp.blob();
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = `unigift-ai-${Date.now()}.jpg`;
+                a.click();
+                URL.revokeObjectURL(a.href);
+            } catch {
+                // fallback: buka di tab baru
+                window.open(currentImageUrl, '_blank');
+            }
+        }
+
+        // ── Checkout ──────────────────────────────────────────────────
+        function goCheckout() {
+            const prompt = document.getElementById('userPrompt').value.trim();
+            if (prompt) sessionStorage.setItem('aiPrompt', prompt);
+            window.location.href = '../products.html';
+        }
+
+        // ── Submit to store (dari viewport) ──────────────────────────
+        function submitToStore() {
+            const prompt = document.getElementById('userPrompt').value.trim();
+            if (prompt) document.getElementById('design-deskripsi').value = prompt;
+            switchTab('submit-design');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ── History (localStorage) ────────────────────────────────────
+        const HISTORY_KEY = 'ugs_ai_history';
+
+        function saveToHistory(item) {
+            let history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+            history.unshift(item);
+            history = history.slice(0, 8); // simpan max 8
+            localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        }
+
+        function renderHistory() {
+            const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+            const panel = document.getElementById('historyPanel');
+            const grid  = document.getElementById('historyGrid');
+            if (history.length === 0) { panel.classList.add('hidden'); return; }
+            panel.classList.remove('hidden');
+            grid.innerHTML = history.map((h, i) => `
+                <div class="relative group cursor-pointer rounded-2xl overflow-hidden border border-slate-200 shadow-sm aspect-square bg-slate-100"
+                     onclick="loadFromHistory(${i})">
+                    <img src="${h.url}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                    <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/50 transition-all flex items-end p-2">
+                        <p class="text-white text-[9px] font-bold opacity-0 group-hover:opacity-100 transition-opacity leading-tight line-clamp-2">${h.prompt}</p>
+                    </div>
+                </div>`).join('');
+        }
+
+        function loadFromHistory(idx) {
+            const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+            const h = history[idx];
+            if (!h) return;
+            document.getElementById('userPrompt').value = h.prompt;
+            updateSteps();
+            currentImageUrl = h.url;
+            const renderImage = document.getElementById('renderImage');
+            renderImage.src = h.url;
+            document.getElementById('initialState').classList.add('hidden');
+            const resultState = document.getElementById('resultState');
+            resultState.classList.remove('hidden', 'opacity-0', 'scale-110');
+            resultState.classList.add('opacity-100', 'scale-100');
+            const actionPanel = document.getElementById('actionPanel');
+            actionPanel.classList.remove('hidden', 'opacity-0', 'translate-y-10', 'pointer-events-none');
+            actionPanel.classList.add('opacity-100', 'translate-y-0');
+            document.getElementById('actionTitle').textContent = h.prompt.length > 40
+                ? h.prompt.slice(0, 40) + '…' : h.prompt;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function clearHistory() {
+            if (!confirm('Hapus semua riwayat generate?')) return;
+            localStorage.removeItem(HISTORY_KEY);
+            renderHistory();
+        }
+
+        // Load history saat halaman buka
+        renderHistory();
+
+        // ── Submit design (Tab 2) ─────────────────────────────────────
+        async function submitDesign() {
+            const nama   = document.getElementById('design-nama').value.trim();
+            const kat    = document.getElementById('design-kategori').value;
+            const desc   = document.getElementById('design-deskripsi').value.trim();
+            const harga  = document.getElementById('design-harga').value;
+            const kontak = document.getElementById('design-kontak').value.trim();
+            const terms  = document.getElementById('design-terms').checked;
+            const msgEl  = document.getElementById('design-msg');
+
+            if (!designFile)  { showMsg(msgEl, 'Harap upload file desain terlebih dahulu.', 'red'); return; }
+            if (!nama)        { showMsg(msgEl, 'Nama desain wajib diisi.', 'red'); return; }
+            if (!kat)         { showMsg(msgEl, 'Pilih kategori produk.', 'red'); return; }
+            if (!kontak)      { showMsg(msgEl, 'Email / WhatsApp wajib diisi.', 'red'); return; }
+            if (!terms)       { showMsg(msgEl, 'Harap setujui syarat & ketentuan terlebih dahulu.', 'red'); return; }
+
+            showMsg(msgEl, 'Mengirim desain... ⏳', 'gray');
+
+            try {
+                const res = await fetch(`${API_BASE}/api/design-submissions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nama, kategori: kat, deskripsi: desc, harga_saran: harga || null, kontak }),
+                });
+                const json = await res.json();
+                if (!json.success) throw new Error(json.message);
+                showMsg(msgEl, `✅ ${json.message}`, 'green');
+            } catch (err) {
+                showMsg(msgEl, `❌ ${err.message || 'Gagal mengirim. Coba lagi.'}`, 'red');
+                return;
+            }
+
+            setTimeout(() => {
+                ['design-nama','design-deskripsi','design-kontak'].forEach(x => document.getElementById(x).value = '');
+                document.getElementById('design-kategori').value = '';
+                document.getElementById('design-harga').value = '';
+                document.getElementById('design-terms').checked = false;
+                clearDesign(new Event('click'));
+                msgEl.classList.add('hidden');
+            }, 4000);
+        }
+
+        // ── Submit kontributor (Tab 3) ────────────────────────────────
+        async function submitKontributor() {
+            const org   = document.getElementById('c-org').value.trim();
+            const tipe  = document.getElementById('c-tipe').value;
+            const pic   = document.getElementById('c-pic').value.trim();
+            const email = document.getElementById('c-email').value.trim();
+            const wa    = document.getElementById('c-wa').value.trim();
+            const msgEl = document.getElementById('kontributor-msg');
+
+            if (!org || !tipe || !pic || !email || !wa) {
+                showMsg(msgEl, 'Harap lengkapi semua field yang wajib diisi (*).', 'red');
+                return;
+            }
+
+            showMsg(msgEl, 'Mengirim pendaftaran... ⏳', 'gray');
+
+            try {
+                const res = await fetch(`${API_BASE}/api/contributor-apply`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nama_organisasi: org, tipe_organisasi: tipe, nama_pic: pic,
+                        email, nomor_wa: wa,
+                        tier: document.getElementById('c-tier').value,
+                        pesan: document.getElementById('c-pesan').value,
+                    }),
+                });
+                const json = await res.json();
+                if (!json.success) throw new Error(json.message);
+                showMsg(msgEl, `✅ ${json.message}`, 'green');
+            } catch (err) {
+                showMsg(msgEl, `❌ ${err.message || 'Gagal mengirim. Coba lagi.'}`, 'red');
+                return;
+            }
+
+            setTimeout(() => {
+                ['c-org','c-pic','c-email','c-wa','c-pesan'].forEach(x => document.getElementById(x).value = '');
+                document.getElementById('c-tipe').value = '';
+                document.getElementById('c-tier').value = 'Silver';
+            }, 3000);
+        }
+
+        // ── Helper ────────────────────────────────────────────────────
+        function showMsg(el, msg, color) {
+            const colors = { red: 'text-red-500', green: 'text-green-600', gray: 'text-slate-400' };
+            el.textContent = msg;
+            el.className = `text-sm font-bold text-center mb-4 ${colors[color] || 'text-slate-500'}`;
+            el.classList.remove('hidden');
         }
     </script>
 </body>
